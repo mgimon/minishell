@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/18 14:35:33 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:35:54 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ typedef struct	s_token
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
+
+typedef	struct	s_general
+{
+	struct s_token	*tokens_list;
+}	t_general;
 
 // tokenizer.c
 t_token	*tokenizer(char *input);

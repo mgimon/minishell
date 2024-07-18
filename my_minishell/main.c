@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/18 14:36:06 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:31:30 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
-    char	*input;
+    char		*input;
+	t_general	info;
 
     signal(SIGINT, handle_sigint);
     while (1)
@@ -33,9 +34,15 @@ int main(int argc, char **argv, char **env)
             break; // Salir si readline == EOF (NULL)
 
         //Checks parseo a full, verificar input OK
-		//Tokenizamos el input
-		tokenizer(input);
-		//Si tokenizacion OK, ejecutar los tokens
+		
+		//Tokenizar el input
+		info.tokens_list = tokenizer(input);
+
+		//init_general(env, tokens_list);
+
+		//Ejecutar los tokens
+
+		//Free structs
 
         if (input[0] != '\0')
             add_history(input);
