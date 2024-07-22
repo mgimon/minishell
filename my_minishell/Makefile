@@ -5,7 +5,7 @@ LIB_DIR     = ./libft/
 LIB_NAME    = libft.a
 LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))
 
-SRCS        = main.c tokenizer.c
+SRCS        = main.c tokenizer.c executor.c
 OBJS        = $(SRCS:.c=.o)
 
 .PHONY: all clean fclean re

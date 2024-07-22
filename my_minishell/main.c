@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/18 16:31:30 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:21:55 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ int main(int argc, char **argv, char **env)
             break; // Salir si readline == EOF (NULL)
 
         //Checks parseo a full, verificar input OK
-		
-		//Tokenizar el input
-		info.tokens_list = tokenizer(input);
 
-		//init_general(env, tokens_list);
+		//init_general(&info, env) - Guardar numero de tokens en info->number_of_tokens 
+
+		// Mallockear lista enlazada de structs t_tokens
+		tokenizer(&info, input);
+
+/* -------------@mgimon-c hace esta parte ----------------------------*/
 
 		//Ejecutar los tokens
+		tokens_executor(&info);
 
 		//Free structs
 

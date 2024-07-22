@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/18 16:35:54 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/22 20:21:52 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ typedef struct	s_token
 
 typedef	struct	s_general
 {
+	int				number_of_tokens;
 	struct s_token	*tokens_list;
 }	t_general;
 
 // tokenizer.c
-t_token	*tokenizer(char *input);
+void	tokenizer(t_general *info, char *input);
+void	tokens_executor(t_general *info);
+
 
 #endif
