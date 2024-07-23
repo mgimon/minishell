@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 17:03:55 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/18 14:25:16 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:57:03 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+int					ft_strcmp(const char *s1, const char *s2);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
