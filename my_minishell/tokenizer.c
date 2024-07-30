@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:56:14 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/24 19:32:40 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:14:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 void	tokenizer(t_general *info, char *input)
 {
-	t_token	*list;
+	t_token		*list;
+	t_section	*sections_list;
 
 	(void)input;
-	//----------- pruebas -------------------
-	info->number_of_tokens = 9;
+
+	//----------- hardcodeo -------------------
+	info->number_of_tokens = 16;
+	//info->number_of_tokens = 5;
 	list = malloc(sizeof(t_token) * info->number_of_tokens);
 
 	list[0].str = "<";
@@ -27,7 +30,7 @@ void	tokenizer(t_general *info, char *input)
 	list[0].next = &list[1];
 
     list[1].str = "vehicles.txt";
-    list[1].type = 2;
+    list[1].type = 6;
     list[1].prev = &list[0];
     list[1].next = &list[2];
 
@@ -42,7 +45,7 @@ void	tokenizer(t_general *info, char *input)
     list[3].next = &list[4];
 
     list[4].str = "|";
-    list[4].type = 6;
+    list[4].type = 7;
     list[4].prev = &list[3];
     list[4].next = &list[5];
 
@@ -62,12 +65,48 @@ void	tokenizer(t_general *info, char *input)
     list[7].next = &list[8];
 
     list[8].str = "empty.txt";
-    list[8].type = 2;
+    list[8].type = 6;
     list[8].prev = &list[7];
-    list[8].next = NULL;
+    list[8].next = &list[9];
 
+	list[9].str = "|";
+    list[9].type = 7;
+    list[9].prev = &list[8];
+    list[9].next = &list[10];
+
+    list[10].str = "awk";
+    list[10].type = 1;
+    list[10].prev = &list[9];
+    list[10].next = &list[11];
+
+    list[11].str = "{print $0}";
+    list[11].type = 2;
+    list[11].prev = &list[10];
+    list[11].next = &list[12];
+
+    list[12].str = ">";
+    list[12].type = 3;
+    list[12].prev = &list[11];
+    list[12].next = &list[13];
+
+    list[13].str = "archivo3.txt";
+    list[13].type = 6;
+    list[13].prev = &list[12];
+    list[13].next = &list[14];
+
+    list[14].str = ">";
+    list[14].type = 3;
+    list[14].prev = &list[13];
+    list[14].next = &list[15];
+
+    list[15].str = "archivo4.txt";
+    list[15].type = 6;
+    list[15].prev = &list[14];
+    list[15].next = NULL;
+
+
+	//----------- end hardcodeo -------------------
 	info->tokens_list = list;
-	//----------- end pruebas -------------------
-	
-	//mallockear y rellenar la lista de tokens
+	sections_list = create_sections_list(info);
+	print_sections_info(sections_list);
 }

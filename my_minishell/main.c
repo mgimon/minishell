@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/22 20:21:55 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:01:25 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,19 @@ int main(int argc, char **argv, char **env)
         if (input == NULL)
             break; // Salir si readline == EOF (NULL)
 
-        //Checks parseo a full, verificar input OK
+        // Checks parseo a full
+		// Las rutas absolutas deben marcarse como un unico token de tipo cmd(1)
+		
+		// Seteo el path y env en la struct t_general info
+		set_path_and_env(&info, env);
 
-		//init_general(&info, env) - Guardar numero de tokens en info->number_of_tokens 
-
-		// Mallockear lista enlazada de structs t_tokens
+		// Hardcodeado de momento
 		tokenizer(&info, input);
 
-/* -------------@mgimon-c hace esta parte ----------------------------*/
+/* -------------@mgimon-c hace esta parte ---------------------------- */
 
 		//Ejecutar los tokens
-		tokens_executor(&info);
+		//tokens_executor(&info);
 
 		//Free structs
 

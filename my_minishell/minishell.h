@@ -6,14 +6,16 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/24 20:14:51 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:07:58 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft/libft.h"
 # include <stdio.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
@@ -41,10 +43,10 @@ typedef struct	s_token
 
 typedef struct	s_file
 {
-	t_file	*next;
-	char	*string;
-	int		open_mode;
-}
+	struct s_file	*next;
+	char			*string;
+	int				open_mode;
+}	t_file;
 
 typedef struct	s_section
 {
@@ -53,21 +55,24 @@ typedef struct	s_section
 	int					fd_read;
 	int					fd_write;
 	char				**env;
+	char				**paths;
 	char				*path;
 	char				**cmdv;
-}	t_section
+}	t_section;
 
 typedef	struct	s_general
 {
 	int				number_of_tokens;
 	struct s_token	*tokens_list;
+	char			**env;
+	char			**paths;
 }	t_general;
 
 // tokenizer.c
 void	tokenizer(t_general *info, char *input);
 
 // sections.c
-char    **get_gross_section(t_token *first, int *section_end);
+t_section	*create_sections_list(t_general *info);
 
 // executor.c
 void	tokens_executor(t_general *info);
@@ -75,5 +80,25 @@ void	tokens_executor(t_general *info);
 // prints.c
 void    print_token_list(t_general *info);
 void    print_matrix(char **matrix);
+void    print_sections_info(t_section *section);
+
+// utils_1.c
+int		thereis_pipe(t_token *first);
+void    set_path_and_env(t_general *info, char **env);
+int		count_tokens_per_section(t_token *first);
+int		count_sections(t_token *first);
+int		ft_strncmp_pipex(const char *str, const char *str2, size_t c);
+
+// utils_2.c
+int		count_files_per_section(t_token *first);
+int		count_cmdvs_per_section(t_token *first);
+t_token *get_first_in_section(t_token *first, int s);
+void    add_file_to_files(t_token *section_first, t_file *files, int *i, int n);
+void    open_files_section(t_section *section);
+
+// utils_3.c
+char    *ft_strjoin_pipex(char const *s1, char const *s2);
+void	set_cmd_in_paths(t_section *section);
+void	set_correct_path(t_section *section);
 
 #endif

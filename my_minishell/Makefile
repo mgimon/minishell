@@ -6,6 +6,8 @@ LIB_NAME    = libft.a
 LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))
 
 SRCS        = main.c tokenizer.c executor.c prints.c \
+				utils_1.c sections.c utils_2.c \
+				utils_3.c \
 
 OBJS        = $(SRCS:.c=.o)
 
@@ -14,7 +16,7 @@ OBJS        = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB)
-	$(CC) $(FLAGS) -o $(NAME) $(OBJS) -L$(LIB_DIR) -lft -lreadline
+	$(CC) $(FLAGS) -o $(NAME) $(OBJS) -L$(LIB_DIR) -lft -lreadline -fsanitize=address
 
 $(LIB):
 	@make -C $(LIB_DIR)
