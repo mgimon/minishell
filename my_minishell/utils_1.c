@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:32:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 17:27:56 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/29 16:26:04 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	set_path_and_env(t_general *info, char **env)
 {
 	int		i;
 	char	*tmp;
-	char	*tmp_clean;
 
 	i = 0;
 	tmp = NULL;
@@ -101,11 +100,11 @@ void	set_path_and_env(t_general *info, char **env)
 		}
 		i++;
 	}
+	i = 0;
 	if (tmp)
 	{
-		tmp_clean = tmp + 5;
-		info->paths = ft_split(tmp_clean, ':');
-		return ;
+		info->paths = ft_split(tmp, ':');
+		if (info->paths == NULL)
+			return ;
 	}
-	info->paths = NULL;
 }

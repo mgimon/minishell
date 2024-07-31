@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 17:07:58 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:41:28 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,11 @@ typedef struct	s_section
 
 typedef	struct	s_general
 {
-	int				number_of_tokens;
-	struct s_token	*tokens_list;
-	char			**env;
-	char			**paths;
+	int					number_of_tokens;
+	struct s_token		*tokens_list;
+	char				**env;
+	char				**paths;
+	struct s_section	*sections;
 }	t_general;
 
 // tokenizer.c
@@ -75,7 +76,7 @@ void	tokenizer(t_general *info, char *input);
 t_section	*create_sections_list(t_general *info);
 
 // executor.c
-void	tokens_executor(t_general *info);
+void	executor(t_general *info);
 
 // prints.c
 void    print_token_list(t_general *info);
@@ -99,6 +100,11 @@ void    open_files_section(t_section *section);
 // utils_3.c
 char    *ft_strjoin_pipex(char const *s1, char const *s2);
 void	set_cmd_in_paths(t_section *section);
-void	set_correct_path(t_section *section);
+void	set_path(t_section *section);
 
+//tokenizer_2.c
+int		recalculate_tokens(t_general *info);
+void	add_token(t_general *info, char *word, int type);
+void	tokenize_input(t_general *info, char *input);
+void	free_tokens_list(t_general *info);
 #endif

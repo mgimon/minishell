@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:18:36 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 17:19:23 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:32:52 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void	print_sections_info(t_section *section)
 		print_matrix(tmp->cmdv);
 		printf("paths are:\n");
 		print_matrix(tmp->paths);
-		printf("The correct path is:\n");
-		printf("%s\n\n", tmp->path);	
+		printf("\nthe right path is:\n");
+		printf("\n%s\n\n", tmp->path);
 		while (file)
 		{
 			printf("El file %d se llama %s\n", i, file->string);

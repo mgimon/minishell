@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:56:14 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 16:14:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:10:16 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	tokenizer(t_general *info, char *input)
 	(void)input;
 
 	//----------- hardcodeo -------------------
-	info->number_of_tokens = 16;
+	info->number_of_tokens = 14;
 	//info->number_of_tokens = 5;
 	list = malloc(sizeof(t_token) * info->number_of_tokens);
 
@@ -74,12 +74,12 @@ void	tokenizer(t_general *info, char *input)
     list[9].prev = &list[8];
     list[9].next = &list[10];
 
-    list[10].str = "awk";
+    list[10].str = "wc";
     list[10].type = 1;
     list[10].prev = &list[9];
     list[10].next = &list[11];
 
-    list[11].str = "{print $0}";
+    list[11].str = "-w";
     list[11].type = 2;
     list[11].prev = &list[10];
     list[11].next = &list[12];
@@ -94,7 +94,7 @@ void	tokenizer(t_general *info, char *input)
     list[13].prev = &list[12];
     list[13].next = &list[14];
 
-    list[14].str = ">";
+/*	list[14].str = ">";
     list[14].type = 3;
     list[14].prev = &list[13];
     list[14].next = &list[15];
@@ -102,11 +102,10 @@ void	tokenizer(t_general *info, char *input)
     list[15].str = "archivo4.txt";
     list[15].type = 6;
     list[15].prev = &list[14];
-    list[15].next = NULL;
+    list[15].next = NULL;*/
 
 
 	//----------- end hardcodeo -------------------
 	info->tokens_list = list;
 	sections_list = create_sections_list(info);
-	print_sections_info(sections_list);
 }

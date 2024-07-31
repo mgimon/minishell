@@ -6,53 +6,110 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 16:01:25 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:26:39 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell.h" // Asegúrate de que este archivo tiene las definiciones para t_general y t_token, más las firmas de funciones mencionadas.
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void handle_sigint(int sig)
+// Prototipos de las funciones si no están definidos en minishell.h
+void sigint_handler(int signo);
+void sigquit_handler(int signo);
+int init_general(t_general *info, char **env);
+void free_tokens_list(t_general *info);
+void tokenize_input(t_general *info, char *input);
+
+void sigint_handler(int signo)
 {
-	(void)sig;
-    exit(0);
+    if (signo == SIGINT)
+    {
+        printf("\n");
+        rl_on_new_line();    // Prepara una nueva línea en la terminal
+        rl_replace_line("", 0);  // Limpia la línea en la terminal pero no termina
+        rl_redisplay();  // Vuelve a mostrar el prompt al usuario
+    }
+    
+    // Silencia el aviso de parámetro no utilizado
+    (void)signo;
+}
+
+void sigquit_handler(int signo)
+{
+    if (signo == SIGQUIT)
+    {
+        printf("Quit: %d\n", signo);  // Muestra el mensaje pero sin finalizar el proceso
+    }
+    
+    // Silencia el aviso de parámetro no utilizado
+    (void)signo;
+}
+
+int init_general(t_general *info, char **env)
+{
+    // Se asume que esta función inicializa 'info' y se puede ajustar según 'env'
+    info->number_of_tokens = 0;
+    info->tokens_list = NULL;
+    
+    // Envío a callar la advertencia sobre el parámetro 'env' no utilizado al principio
+    (void)env;
+
+    return 0; // Retorna 0, que indica éxito
 }
 
 int main(int argc, char **argv, char **env)
 {
-	(void)argc;
-	(void)argv;
-	(void)env;
-    char		*input;
-	t_general	info;
+    char *input;
+    t_general info; // Declaración de la estructura necesaria
+    const char *history_file = ".minishell_history";
 
-    signal(SIGINT, handle_sigint);
+    // Inicialización, ignorando parámetros por ahora
+    (void)argc;
+    (void)argv;
+    init_general(&info, env);
+
+    // Configuración del manejo de señales
+    signal(SIGINT, sigint_handler);   // Para ctrl+C
+    signal(SIGQUIT, sigquit_handler); // Para ctrl+"\"
+
+    using_history();
+    read_history(history_file);
+
     while (1)
-	{
+    {
         input = readline("mini> ");
-        if (input == NULL)
-            break; // Salir si readline == EOF (NULL)
+        if (!input)
+        {
+            printf("\nExit\n");
+            break; // Salida en EOF
+        }
+		input = "hey";        
+        if (*input)
+        {
+            //add_history(input); // Añade al historial si no es una entrada vacía
 
-        // Checks parseo a full
-		// Las rutas absolutas deben marcarse como un unico token de tipo cmd(1)
-		
-		// Seteo el path y env en la struct t_general info
-		set_path_and_env(&info, env);
+            //tokenize_input(&info, input); // Trata tokenizar la entrada
+			set_path_and_env(&info, env);
+			tokenizer(&info, input);
+			info.sections = create_sections_list(&info);
+			print_sections_info(info.sections);
+			executor(&info);
+            
+            //printf("Total tokens: %d\n", recalculate_tokens(&info)); // Muestra el número recalculado de tokens
 
-		// Hardcodeado de momento
-		tokenizer(&info, input);
+            // No olvides liberar cada lista de tokens creados aquí.
+            //free_tokens_list(&info);
+        }
 
-/* -------------@mgimon-c hace esta parte ---------------------------- */
-
-		//Ejecutar los tokens
-		//tokens_executor(&info);
-
-		//Free structs
-
-        if (input[0] != '\0')
-            add_history(input);
-
-        free(input); // Liberar la memoria asignada por readline
+        //free(input); // Liberar el input después de su uso
     }
-    return (0);
+
+    // Conservar el historial de comandos para futuras sesiones
+    //write_history(history_file);
+    return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 19:27:00 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 16:51:39 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:22:20 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	i = 0;
-	if (!s1)
-		return (NULL);
 	while (s1[i] != '\0')
 	{
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/29 17:32:17 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:35:00 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ char	*ft_strjoin_pipex(char const *s1, char const *s2)
 	return (str);
 }
 
-// if PATH= is unset, path is first cmd token in prompt
-void	set_correct_path(t_section *section)
+void	set_path(t_section *section)
 {
 	int	i;
 
@@ -65,8 +64,10 @@ void	set_cmd_in_paths(t_section *section)
 	int		i;
 
 	i = 0;
-	if (!section->paths || !section->cmdv)
+	if (!section->paths)
 		return ;
+	if (!section->cmdv || !section->cmdv[0])
+		exit(0);
 	while (section->paths[i] != NULL)
 	{
 		new_path = ft_strjoin_pipex(section->paths[i], "/");
