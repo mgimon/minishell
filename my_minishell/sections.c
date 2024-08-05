@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/31 15:35:03 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:04:16 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	set_files_section(t_section *section, t_token *first, int s)
 	}
 	section->files = files;
 	open_files_section(section);
-
 }
 
 void	set_cmdv_section(t_section *section, t_token *first, int s)
