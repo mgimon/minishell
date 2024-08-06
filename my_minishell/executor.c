@@ -6,12 +6,15 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/05 20:19:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:31:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// ultimo else if quizas no necesario
+// si no ejecuta builtin, hara el execve
+// si el execve no termina el proceso, gestiona el error cmdnotfound
 void	child_process(t_section *current, int prev_fd, int *pipefd)
 {
 	if (current->fd_read != -1)
@@ -35,9 +38,10 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 		close(pipefd[1]);
 		close(pipefd[0]);
 	}
-	//quizas no necesario
 	else if (current->next == NULL && current->fd_write == -1)
 		close(pipefd[0]);
+	if (exec_if_builtin(current) > 0)
+		exit(0);
 	execve(current->path, current->cmdv, NULL);
 	write(2, "Error: Command not found\n", 25);
 	exit(127);
