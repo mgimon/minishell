@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/06 18:15:54 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/11 20:27:55 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct	s_file
 
 typedef struct	s_section
 {
+	struct s_general	*info;
 	struct s_section	*next;
 	t_file				*files;
 	int					fd_read;
@@ -81,7 +82,11 @@ void	executor(t_general *info);
 // prints.c
 void    print_token_list(t_general *info);
 void    print_matrix(char **matrix);
+void    print_string_to_stderror(char *str);
 void    print_sections_info(t_section *section);
+
+// frees.c
+void	free_sections_list(t_section *first);
 
 // utils_1.c
 int		thereis_pipe(t_token *first);
@@ -109,7 +114,7 @@ void	add_token(t_general *info, char *word, int type);
 void	tokenize_input(t_general *info, char *input);
 void	free_tokens_list(t_general *info);
 
-// builtins.c
+// builtins_1.c
 int		execute_echo(t_section *current);
 
 #endif

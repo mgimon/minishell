@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/06 18:31:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/11 20:29:21 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,11 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	}
 	else if (current->next == NULL && current->fd_write == -1)
 		close(pipefd[0]);
-	if (exec_if_builtin(current) > 0)
+	if (exec_if_builtin(current) == 0)
+	{
+		free_sections_list(current->info->sections);
 		exit(0);
+	}
 	execve(current->path, current->cmdv, NULL);
 	write(2, "Error: Command not found\n", 25);
 	exit(127);
@@ -76,13 +79,15 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 
 void	executor(t_general *info)
 {
-    t_section *current = info->sections;
+    t_section *current;
     int pipefd[2];
-    int prev_fd = -1;
+    int prev_fd;
     pid_t pid;
     int status;
 
 	status = 0;
+	prev_fd = -1;
+	current = info->sections;
     while (current != NULL)
 	{
         if (current->next != NULL)
@@ -109,7 +114,8 @@ void	executor(t_general *info)
 			child_process(current, prev_fd, pipefd);
 		}
 		else
+		{
 			parent_process(&current, &prev_fd, pipefd, pid, status);
+		}
     }
-    //while (wait(NULL) > 0);	
 }

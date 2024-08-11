@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/05 17:05:03 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/11 15:53:37 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 // Prototipos de las funciones si no están definidos en minishell.h
 void sigint_handler(int signo);
 void sigquit_handler(int signo);
-int init_general(t_general *info, char **env);
 void free_tokens_list(t_general *info);
 void tokenize_input(t_general *info, char *input);
 
@@ -50,28 +49,17 @@ void sigquit_handler(int signo)
     (void)signo;
 }
 
-int init_general(t_general *info, char **env)
-{
-    // Se asume que esta función inicializa 'info' y se puede ajustar según 'env'
-    info->number_of_tokens = 0;
-    info->tokens_list = NULL;
-    
-    // Envío a callar la advertencia sobre el parámetro 'env' no utilizado al principio
-    (void)env;
-
-    return 0; // Retorna 0, que indica éxito
-}
-
 int main(int argc, char **argv, char **env)
 {
     char *input;
     t_general info; // Declaración de la estructura necesaria
     const char *history_file = ".minishell_history";
 
-    // Inicialización, ignorando parámetros por ahora
+    // Init
     (void)argc;
     (void)argv;
-    init_general(&info, env);
+	info.number_of_tokens = 0;
+	info.tokens_list = NULL;
 
     // Configuración del manejo de señales
     signal(SIGINT, sigint_handler);   // Para ctrl+C

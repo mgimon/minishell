@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/06 18:23:34 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/11 19:56:16 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	exec_if_builtin(t_section *current)
 {
 	int	output;
 
-	output = 0;
+	output = 1;
 	if (ft_strncmp_pipex(current->cmdv[0], "echo", 4) == 0)
 		output = execute_echo(current);
 /*	else if (ft_strncmp_pipex(cmdv[0], "cd", 2) == 0)

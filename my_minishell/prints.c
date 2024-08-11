@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:18:36 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/31 15:32:52 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/11 17:07:12 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,20 @@ void    print_matrix(char **matrix)
         i++;
     }
 	printf("\n");
+}
+
+void	print_string_to_stderror(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return ;
+	while (str[i])
+	{
+		write(2, &str[i], 1);
+		i++;
+	}
 }
 
 void	print_sections_info(t_section *section)
