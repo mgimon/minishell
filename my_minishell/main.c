@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 15:53:37 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/16 19:38:13 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,14 @@ int main(int argc, char **argv, char **env)
 
     while (1)
     {
-        input = readline("mini> ");
-        if (!input)
-        {
-            printf("\nExit\n");
-            break; // Salida en EOF
-        }
-		input = "hey";        
-        if (*input)
-        {
+		input = readline("mini> ");
+//		if (!input)
+//		{
+//			printf("\nExit\n");
+//			break; // Salida en EOF
+//		}
+//		if (*input)
+//		{
             //add_history(input); // Añade al historial si no es una entrada vacía
 
             //tokenize_input(&info, input); // Trata tokenizar la entrada
@@ -92,9 +91,10 @@ int main(int argc, char **argv, char **env)
 
             // No olvides liberar cada lista de tokens creados aquí.
             //free_tokens_list(&info);
-        }
+			free(info.tokens_list);
+//		}
 
-        //free(input); // Liberar el input después de su uso
+        free(input); // Liberar el input después de su uso
     }
 
     // Conservar el historial de comandos para futuras sesiones

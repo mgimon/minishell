@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:05:39 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 17:51:47 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/16 20:41:11 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,35 @@ int execute_echo(t_section *current)
 		write(STDOUT_FILENO, "\n", 1);
     return (0);
 }
+
+
+int	execute_pwd(t_section *current)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (current->env[i] != NULL)
+	{
+		if (ft_strncmp_pipex(current->env[i], "PWD=", 4) == 0)
+		{
+			tmp = current->env[i];
+			break ;
+		}
+		i++;
+	}
+	if (!tmp)
+		return (0);
+	i = 4;
+	while (tmp[i])
+	{
+		write(STDOUT_FILENO, &tmp[i], 1);
+		i++;
+	}
+	return (0);
+}
+
+
+
 

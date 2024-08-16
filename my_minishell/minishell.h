@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 20:27:55 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/16 20:19:47 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,6 @@ void	free_tokens_list(t_general *info);
 
 // builtins_1.c
 int		execute_echo(t_section *current);
+int		execute_pwd(t_section *current);
 
 #endif

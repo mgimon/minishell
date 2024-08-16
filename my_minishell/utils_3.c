@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 19:56:16 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/16 20:19:23 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	set_path(t_section *section)
 void	set_cmd_in_paths(t_section *section)
 {
 	char	*new_path;
+	char	*tmp;
 	int		i;
 
 	i = 0;
@@ -70,8 +71,9 @@ void	set_cmd_in_paths(t_section *section)
 		exit(0);
 	while (section->paths[i] != NULL)
 	{
-		new_path = ft_strjoin_pipex(section->paths[i], "/");
-		new_path = ft_strjoin_pipex(new_path, section->cmdv[0]);
+		tmp = ft_strjoin_pipex(section->paths[i], "/");
+		new_path = ft_strjoin_pipex(tmp, section->cmdv[0]);
+		free(tmp);
 		if (new_path == NULL)
 		{
 			while (i >= 0)
@@ -89,6 +91,8 @@ void	set_cmd_in_paths(t_section *section)
 	}
 }
 
+// returns 0 if builtin found and successfully processed
+// returns a positive value otherwise
 int	exec_if_builtin(t_section *current)
 {
 	int	output;
@@ -97,10 +101,10 @@ int	exec_if_builtin(t_section *current)
 	if (ft_strncmp_pipex(current->cmdv[0], "echo", 4) == 0)
 		output = execute_echo(current);
 /*	else if (ft_strncmp_pipex(cmdv[0], "cd", 2) == 0)
-		output = execute_cd(current);
-	else if (ft_strncmp_pipex(cmdv[0], "pwd", 3) == 0)
+		output = execute_cd(current);*/
+	else if (ft_strncmp_pipex(current->cmdv[0], "pwd", 3) == 0)
 		output = execute_pwd(current);
-	else if (ft_strncmp_pipex(cmdv[0], "export", 6) == 0)
+/*	else if (ft_strncmp_pipex(cmdv[0], "export", 6) == 0)
 		output = execute_export(current);
 	else if (ft_strncmp_pipex(cmdv[0], "unset", 5) == 0)
 		output = execute_unset(current);

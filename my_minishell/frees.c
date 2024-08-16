@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 19:56:25 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 20:53:20 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/16 19:30:57 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,9 @@ void	free_sections_list(t_section *first)
 	{
 		tmp = first->next;
 		matrix_free(first->paths);
-	/*	matrix_free(first->cmdv);*/
+		free(first->cmdv);
 		free_files(first->files);
 		free(first->path);
-		// unnecessary?
-	/*	free(first);*/
 		first = tmp;
 	}
 	free(first_ptr);
