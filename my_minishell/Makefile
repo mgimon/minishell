@@ -8,6 +8,7 @@ LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))
 SRCS        = main.c tokenizer.c tokenizer_2.c executor.c prints.c \
 				utils_1.c sections.c utils_2.c \
 				utils_3.c builtins_1.c frees.c \
+				builtins_2.c \
 
 OBJS        = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:32:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:18:48 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:46:40 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_strncmp_pipex(const char *str, const char *str2, size_t c)
 	return (diff);
 }
 
-void	set_path_and_env(t_general *info, char **env)
+void	set_paths_and_env(t_general *info, char **env)
 {
 	int		i;
 	char	*tmp;

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 19:38:13 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:55:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,12 @@ void sigquit_handler(int signo)
     (void)signo;
 }
 
+void sigterm_handler(int signo)
+{
+	if (signo == SIGTERM)
+		exit(0);
+}
+
 int main(int argc, char **argv, char **env)
 {
     char *input;
@@ -64,10 +70,12 @@ int main(int argc, char **argv, char **env)
     // Configuración del manejo de señales
     signal(SIGINT, sigint_handler);   // Para ctrl+C
     signal(SIGQUIT, sigquit_handler); // Para ctrl+"\"
+	signal(SIGTERM, sigterm_handler); // Para el builtin exit
 
     using_history();
     read_history(history_file);
 
+	set_paths_and_env(&info, env);
     while (1)
     {
 		input = readline("mini> ");
@@ -81,7 +89,6 @@ int main(int argc, char **argv, char **env)
             //add_history(input); // Añade al historial si no es una entrada vacía
 
             //tokenize_input(&info, input); // Trata tokenizar la entrada
-			set_path_and_env(&info, env);
 			tokenizer(&info, input);
 			info.sections = create_sections_list(&info);
 			print_sections_info(info.sections);

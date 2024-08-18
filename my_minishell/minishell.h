@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:19:47 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:47:36 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,12 @@ void    print_string_to_stderror(char *str);
 void    print_sections_info(t_section *section);
 
 // frees.c
+void	matrix_free(char **str);
 void	free_sections_list(t_section *first);
 
 // utils_1.c
 int		thereis_pipe(t_token *first);
-void    set_path_and_env(t_general *info, char **env);
+void    set_paths_and_env(t_general *info, char **env);
 int		count_tokens_per_section(t_token *first);
 int		count_sections(t_token *first);
 int		ft_strncmp_pipex(const char *str, const char *str2, size_t c);
@@ -103,7 +104,8 @@ void    add_file_to_files(t_token *section_first, t_file *files, int *i, int n);
 void    open_files_section(t_section *section);
 
 // utils_3.c
-int		exec_if_builtin(t_section *current);
+int		exec_if_builtin_1(t_section *current);
+void	exec_if_builtin_2(t_section *current);
 char    *ft_strjoin_pipex(char const *s1, char const *s2);
 void	set_cmd_in_paths(t_section *section);
 void	set_path(t_section *section);
@@ -117,5 +119,10 @@ void	free_tokens_list(t_general *info);
 // builtins_1.c
 int		execute_echo(t_section *current);
 int		execute_pwd(t_section *current);
+int		execute_env(t_section *current);
+int		execute_exit(t_section *current);
+
+// builtins_2.c
+void	execute_unset(t_section *current);
 
 #endif

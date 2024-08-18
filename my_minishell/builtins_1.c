@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:05:39 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:41:11 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 18:23:01 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	execute_pwd(t_section *current)
 
 	i = 0;
 	tmp = NULL;
-	while (current->env[i] != NULL)
+	while (current->info->env[i] != NULL)
 	{
-		if (ft_strncmp_pipex(current->env[i], "PWD=", 4) == 0)
+		if (ft_strncmp_pipex(current->info->env[i], "PWD=", 4) == 0)
 		{
-			tmp = current->env[i];
+			tmp = current->info->env[i];
 			break ;
 		}
 		i++;
@@ -76,6 +76,29 @@ int	execute_pwd(t_section *current)
 	return (0);
 }
 
+int	execute_env(t_section *current)
+{
+	int		i;
+	int		j;
 
+	i = 0;
+	while (current->info->env[i] != NULL)
+	{
+		j = 0;
+		while (current->info->env[i][j] != '\0')
+		{
+			write(STDOUT_FILENO, &current->info->env[i][j], 1);
+			j++;
+		}
+		write(STDOUT_FILENO, "\n", 1);
+		i++;
+	}
+	return (0);
+}
 
-
+int	execute_exit(t_section *current)
+{
+	if (!current->next)
+		kill(0, SIGTERM);
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:56:14 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:42:28 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:52:02 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,15 @@ void	tokenizer(t_general *info, char *input)
     list[7].prev = &list[6];
     list[7].next = NULL;*/
 
-    info->number_of_tokens = 5;
+/*    info->number_of_tokens = 5;
     list = malloc(sizeof(t_token) * info->number_of_tokens);
 
     list[0].str = "pwd";
     list[0].type = 1;
     list[0].prev = NULL;
-    list[0].next = &list[1];
+	list[0].next = &list[1];
 
-    list[1].str = "|";
+	list[1].str = "|";
     list[1].type = 7;
     list[1].prev = &list[0];
     list[1].next = &list[2];
@@ -131,9 +131,20 @@ void	tokenizer(t_general *info, char *input)
     list[4].str = "outfile.txt";
     list[4].type = 6;
     list[4].prev = &list[3];
-    list[4].next = NULL;
+    list[4].next = NULL;*/
 
+	info->number_of_tokens = 2;
+    list = malloc(sizeof(t_token) * info->number_of_tokens);
 
+    list[0].str = "unset";
+    list[0].type = 1;
+    list[0].prev = NULL;
+    list[0].next = &list[1];
+
+    list[1].str = "pathos";
+    list[1].type = 2;
+    list[1].prev = &list[0];
+    list[1].next = NULL;
 
 	//----------- end hardcodeo -------------------
 	info->tokens_list = list;

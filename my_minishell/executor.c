@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:03:18 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:46:55 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	}
 	else if (current->next == NULL && current->fd_write == -1)
 		close(pipefd[0]);
-	if (exec_if_builtin(current) == 0)
+	if (exec_if_builtin_1(current) == 0)
 	{
 		free_sections_list(current->info->sections);
 		exit(0);
@@ -63,18 +63,19 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
-	*current = (*current)->next;
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
 		exit(EXIT_FAILURE);
 	}
+	exec_if_builtin_2(*current);
 	if (WIFEXITED(status))
 		printf("Process %d exited with status %d\n", pid, WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		printf("Process %d was killed by signal %d\n", pid, WTERMSIG(status));
 	else if (WIFSTOPPED(status))
 		printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
+	*current = (*current)->next;
 }
 
 void	executor(t_general *info)

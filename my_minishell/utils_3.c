@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 20:19:23 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:46:52 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,24 +93,36 @@ void	set_cmd_in_paths(t_section *section)
 
 // returns 0 if builtin found and successfully processed
 // returns a positive value otherwise
-int	exec_if_builtin(t_section *current)
+int	exec_if_builtin_1(t_section *current)
 {
 	int	output;
 
 	output = 1;
-	if (ft_strncmp_pipex(current->cmdv[0], "echo", 4) == 0)
+	if (ft_strcmp(current->cmdv[0], "echo") == 0)
 		output = execute_echo(current);
-/*	else if (ft_strncmp_pipex(cmdv[0], "cd", 2) == 0)
-		output = execute_cd(current);*/
-	else if (ft_strncmp_pipex(current->cmdv[0], "pwd", 3) == 0)
+	else if (ft_strcmp(current->cmdv[0], "pwd") == 0)
 		output = execute_pwd(current);
-/*	else if (ft_strncmp_pipex(cmdv[0], "export", 6) == 0)
-		output = execute_export(current);
-	else if (ft_strncmp_pipex(cmdv[0], "unset", 5) == 0)
-		output = execute_unset(current);
-	else if (ft_strncmp_pipex(cmdv[0], "env", 3) == 0)
+	else if (ft_strcmp(current->cmdv[0], "env") == 0)
 		output = execute_env(current);
-	else if (ft_strncmp_pipex(cmdv[0], "exit", 4) == 0)
-		output = execute_exit(current);*/
+	else if (ft_strcmp(current->cmdv[0], "exit") == 0)
+		output = execute_exit(current);
+	else if (ft_strcmp(current->cmdv[0], "cd") == 0)
+		output = 0;
+	else if (ft_strcmp(current->cmdv[0], "export") == 0)
+		output = 0;
+	else if (ft_strcmp(current->cmdv[0], "unset") == 0)
+		output = 0;
 	return (output);
+}
+
+// builtins that are called from the parent process
+// because they must affect the parent's environment
+void	exec_if_builtin_2(t_section *current)
+{
+/*	if (ft_strcmp(cmdv[0], "cd") == 0)
+		execute_cd(current);
+	else if (ft_strcmp(cmdv[0], "export") == 0)
+		execute_export(current);*/
+	if (ft_strcmp(current->cmdv[0], "unset") == 0)
+		execute_unset(current);
 }
