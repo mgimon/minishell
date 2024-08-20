@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/18 20:47:36 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:03:06 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ int		execute_exit(t_section *current);
 
 // builtins_2.c
 void	execute_unset(t_section *current);
+void	execute_export(t_section *current);
 
 #endif

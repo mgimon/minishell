@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/18 20:46:52 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:34:00 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,6 @@ void	exec_if_builtin_2(t_section *current)
 		execute_export(current);*/
 	if (ft_strcmp(current->cmdv[0], "unset") == 0)
 		execute_unset(current);
+	else if (ft_strcmp(current->cmdv[0], "export") == 0)
+		execute_export(current);
 }

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:56:14 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/18 20:52:02 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:39:00 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,18 +133,30 @@ void	tokenizer(t_general *info, char *input)
     list[4].prev = &list[3];
     list[4].next = NULL;*/
 
-	info->number_of_tokens = 2;
+	info->number_of_tokens = 4;
     list = malloc(sizeof(t_token) * info->number_of_tokens);
 
-    list[0].str = "unset";
+    list[0].str = "export";
     list[0].type = 1;
     list[0].prev = NULL;
     list[0].next = &list[1];
 
-    list[1].str = "pathos";
+    list[1].str = "PATH=/usr/local/mipath:/usr/local/sbin/otropath";
     list[1].type = 2;
     list[1].prev = &list[0];
-    list[1].next = NULL;
+    list[1].next = &list[2];
+
+
+    list[2].str = ">";
+    list[2].type = 3;
+    list[2].prev = &list[1];
+    list[2].next = &list[3];
+
+
+    list[3].str = "outfile";
+    list[3].type = 6;
+    list[3].prev = &list[2];
+    list[3].next = NULL;
 
 	//----------- end hardcodeo -------------------
 	info->tokens_list = list;

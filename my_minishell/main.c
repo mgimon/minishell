@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/18 20:55:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:36:49 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ int main(int argc, char **argv, char **env)
 			info.sections = create_sections_list(&info);
 			print_sections_info(info.sections);
 			executor(&info);
+			print_matrix(info.env);
+			printf("\n\nLos nuevos paths son: \n\n");
+			print_matrix(info.paths);
             
             //printf("Total tokens: %d\n", recalculate_tokens(&info)); // Muestra el número recalculado de tokens
 
