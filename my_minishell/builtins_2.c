@@ -6,54 +6,12 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/20 22:12:17 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:48:51 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*add_var_equal(char *cmdv1)
-{
-	char	*result;
-	int		i;
-
-	i = 0;
-	result = malloc((sizeof(char) * ft_strlen(cmdv1)) + 2);
-	while (cmdv1[i])
-	{
-		result[i] = cmdv1[i];
-		i++;
-	}
-	result[i] = '=';
-	i++;
-	result[i] = '\0';
-	return (result);
-}
-
-char	**remove_env_line(t_section *current, int line)
-{
-	int		i;
-	int		j;
-	char	**new_env;
-
-	i = 0;
-	j = 0;
-	while (current->info->env[i])
-		i++;
-	new_env = (char **)malloc((i - 1) * sizeof(char *));
-	i = 0;
-	while (current->info->env[i])
-	{
-        if (i != line)
-        {
-            new_env[j] = ft_strdup(current->info->env[i]);
-            j++;
-        }
-        i++;
-	}
-	new_env[j] = NULL;
-	return (new_env);
-}
 
 // unsets from env in t_general
 // by creating a env copy without the line to unset (if found)
@@ -84,8 +42,10 @@ void	execute_unset(t_section *current)
 	}
 }
 
-// THIS SHOULD WORK FOR ALL VARS, not only PATH
-char	**remove_paths_env(t_section *current)
+// Returns a copy of env
+// without one variable if it matches the users' export request
+// Otherwise, returns env
+char	**if_remove_var_env(t_section *current)
 {
 	int		i;
 	int		j;
@@ -93,10 +53,13 @@ char	**remove_paths_env(t_section *current)
 	int		l;
 	char	**result;
 
-    i = 0;
+    k = 0;
+	while (current->cmdv[1][k] && current->cmdv[1][k] != '=')
+		k++;
+	i = 0;
     while (current->info->env[i])
 	{
-        if (strncmp(current->info->env[i], "PATH=", 5) == 0)
+        if (strncmp(current->info->env[i], current->cmdv[1], (k + 1)) == 0)
             break;
         i++;
     }
@@ -145,8 +108,7 @@ void	execute_export(t_section *current)
 	if (current->next || !current->cmdv[1] || current->cmdv[1][0] == '\0' || !ft_strchr(current->cmdv[1], '='))
 		return ;
 	new_line = ft_strdup(current->cmdv[1]);
-	if (ft_strncmp_pipex(current->cmdv[1], "PATH=", 5) == 0)
-		current->info->env = remove_paths_env(current);
+	current->info->env = if_remove_var_env(current);
 	while (current->info->env[i])
 		i++;
 	new_env = malloc((i + 2) * sizeof(char *));
@@ -166,4 +128,27 @@ void	execute_export(t_section *current)
 			matrix_free(current->info->paths);
 		current->info->paths = new_paths;
 	}
+}
+
+void	execute_cd(t_section *current)
+{
+	int	i;
+
+	i = 0;
+	if (current->next || !current->cmdv[1])
+		return ;
+	if (!is_directory(current->cmdv[1]))
+	{
+		write(2, "\ncd: no such file or directory: ", 32);
+		while (current->cmdv[1][i])
+		{
+			write(2, &current->cmdv[1][i], 1);
+			i++;
+		}
+		write(2, "\n", 1);
+		exit(1);
+	}
+	if (chdir(current->cmdv[1]) == -1)
+		exit(1);
+	//actualizar env(solo pwd y oldpwd)
 }

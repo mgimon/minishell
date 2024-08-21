@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:56:14 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/20 21:39:00 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/21 15:33:53 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	tokenizer(t_general *info, char *input)
     list[0].prev = NULL;
     list[0].next = &list[1];
 
-    list[1].str = "PATH=/usr/local/mipath:/usr/local/sbin/otropath";
+    list[1].str = "TERM=dfnskfsljngljngdlknfgldkjngldjfnlkdjnfglkdnfgldnflgkndfglkdjnglkdnfgldfkjngn";
     list[1].type = 2;
     list[1].prev = &list[0];
     list[1].next = &list[2];

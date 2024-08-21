@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/20 21:03:06 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:03:49 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,10 @@ char    *ft_strjoin_pipex(char const *s1, char const *s2);
 void	set_cmd_in_paths(t_section *section);
 void	set_path(t_section *section);
 
+// utils_4.c
+char    *add_var_equal(char *cmdv1);
+char    **remove_env_line(t_section *current, int line);
+
 // tokenizer_2.c
 int		recalculate_tokens(t_general *info);
 void	add_token(t_general *info, char *word, int type);
@@ -125,5 +129,6 @@ int		execute_exit(t_section *current);
 // builtins_2.c
 void	execute_unset(t_section *current);
 void	execute_export(t_section *current);
+void    execute_cd(t_section *current);
 
 #endif

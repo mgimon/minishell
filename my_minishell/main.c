@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/20 21:36:49 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:46:25 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int main(int argc, char **argv, char **env)
             //free_tokens_list(&info);
 			free(info.tokens_list);
 //		}
-
         free(input); // Liberar el input después de su uso
     }
 

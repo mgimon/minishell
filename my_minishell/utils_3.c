@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/20 21:34:00 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:02:57 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,10 @@ int	exec_if_builtin_1(t_section *current)
 // because they must affect the parent's environment
 void	exec_if_builtin_2(t_section *current)
 {
-/*	if (ft_strcmp(cmdv[0], "cd") == 0)
-		execute_cd(current);
-	else if (ft_strcmp(cmdv[0], "export") == 0)
-		execute_export(current);*/
 	if (ft_strcmp(current->cmdv[0], "unset") == 0)
 		execute_unset(current);
 	else if (ft_strcmp(current->cmdv[0], "export") == 0)
 		execute_export(current);
+	else if (ft_strcmp(current->cmdv[0], "cd") == 0)
+		execute_cd(current);
 }
