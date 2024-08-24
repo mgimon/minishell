@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/21 16:46:25 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/24 14:14:28 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Prototipos de las funciones si no están definidos en minishell.h
 void sigint_handler(int signo);
 void sigquit_handler(int signo);
-void free_tokens_list(t_general *info);
-void tokenize_input(t_general *info, char *input);
 
 void sigint_handler(int signo)
 {
@@ -59,7 +56,7 @@ int main(int argc, char **argv, char **env)
 {
     char *input;
     t_general info; // Declaración de la estructura necesaria
-    const char *history_file = ".minishell_history";
+    //const char *history_file = ".minishell_history";
 
     // Init
     (void)argc;
@@ -72,40 +69,42 @@ int main(int argc, char **argv, char **env)
     signal(SIGQUIT, sigquit_handler); // Para ctrl+"\"
 	signal(SIGTERM, sigterm_handler); // Para el builtin exit
 
-    using_history();
-    read_history(history_file);
+    //using_history();
+    //read_history(history_file);
 
 	set_paths_and_env(&info, env);
     while (1)
     {
 		input = readline("mini> ");
-//		if (!input)
-//		{
-//			printf("\nExit\n");
-//			break; // Salida en EOF
-//		}
-//		if (*input)
-//		{
+		if (!input)
+		{
+			printf("\nExit\n");
+			break; // Salida en EOF
+		}
+		if (*input)
+		{
             //add_history(input); // Añade al historial si no es una entrada vacía
 
-            //tokenize_input(&info, input); // Trata tokenizar la entrada
-			tokenizer(&info, input);
+            tokenize_input(&info, input);
+			t_token	*new_tokens_list = reverse_copy_list(info.tokens_list);
+            free_tokens_list(info.tokens_list);
+			info.tokens_list = new_tokens_list;
+			//tokenizer(&info, input);
+			print_tokens_list(info.tokens_list);
+
 			info.sections = create_sections_list(&info);
 			print_sections_info(info.sections);
+
 			executor(&info);
+
 			print_matrix(info.env);
 			printf("\n\nLos nuevos paths son: \n\n");
 			print_matrix(info.paths);
-            
-            //printf("Total tokens: %d\n", recalculate_tokens(&info)); // Muestra el número recalculado de tokens
-
-            // No olvides liberar cada lista de tokens creados aquí.
-            //free_tokens_list(&info);
-			free(info.tokens_list);
-//		}
-        free(input); // Liberar el input después de su uso
+			free_sections_list(info.sections);            
+            free_tokens_list(info.tokens_list);
+		}
+        free(input);
     }
-
     // Conservar el historial de comandos para futuras sesiones
     //write_history(history_file);
     return 0;

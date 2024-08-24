@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 20:14:46 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/23 20:39:20 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,24 @@ void	init_section_objects(t_general *info, t_token *first, t_section *section, i
 	set_cmdv_section(section, first, s);
 	section->env = info->env;
 	section->info = info;
-	while (info->paths[i])
-		i++;
-	section->paths = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (info->paths[i])
+	if (info->paths)
 	{
-		section->paths[i] = ft_strdup(info->paths[i]);
-		i++;
+		while (info->paths[i])
+			i++;
+	
+		section->paths = malloc(sizeof(char *) * (i + 1));
+		i = 0;
+		while (info->paths[i])
+		{
+			section->paths[i] = ft_strdup(info->paths[i]);
+			i++;
+		}
+		section->paths[i] = NULL;
+		set_cmd_in_paths(section);
+		set_path(section);
 	}
-	section->paths[i] = NULL;
-	set_cmd_in_paths(section);
-	set_path(section);
+	else
+		section->paths = NULL;
 }
 
 void	init_section_all_null(t_section *section)

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/21 16:48:51 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:47:14 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,18 @@ void	execute_unset(t_section *current)
 		if (ft_strncmp_pipex(current->info->env[i], var_equal, length) == 0)
 		{
 			new_env = remove_env_line(current, i);
-			current->info->env = new_env;
-			if (ft_strcmp(current->cmdv[1], "PATH") == 0)
-				matrix_free(current->info->paths);
-			current->info->paths = NULL;
+			if (new_env)
+			{
+				free(var_equal);
+				matrix_free(current->info->env);
+				current->info->env = new_env;
+				if (ft_strcmp(current->cmdv[1], "PATH") == 0)
+					matrix_free(current->info->paths);
+				current->info->paths = NULL;
+			}
+			else
+				free(var_equal);
+			break ;
 		}
 		i++;
 	}
@@ -88,6 +96,7 @@ char	**if_remove_var_env(t_section *current)
 		l++;
     }
     result[k] = NULL;
+	matrix_free(current->info->env);
     return (result);
 }
 
@@ -119,6 +128,7 @@ void	execute_export(t_section *current)
 	}
 	new_env[j] = new_line;
 	new_env[j + 1] = NULL;
+	free(current->info->env);
 	current->info->env = new_env;
 	if (ft_strncmp_pipex(current->cmdv[1], "PATH=", 5) == 0)
 		new_paths = ft_split(current->cmdv[1], ':');
@@ -130,10 +140,50 @@ void	execute_export(t_section *current)
 	}
 }
 
-void	execute_cd(t_section *current)
+char	**new_wd_environment(char **oldenv, const char *var_newpwd, const char *var_newoldpwd)
 {
 	int	i;
+    int env_size;
+    char **newenv;
+    
+	env_size = 0;
+	i = 0;
+    while (oldenv[env_size] != NULL)
+        env_size++; 
+    newenv = malloc((env_size + 1) * sizeof(char *));
+    if (newenv == NULL)
+        return NULL;
+    while (i < env_size)
+	{
+        if (strncmp(oldenv[i], "PWD=", 4) == 0)
+            newenv[i] = strdup(var_newpwd);
+        else if (strncmp(oldenv[i], "OLDPWD=", 7) == 0)
+            newenv[i] = strdup(var_newoldpwd);
+        else
+            newenv[i] = strdup(oldenv[i]);
 
+        if (newenv[i] == NULL)
+		{
+            while (--i >= 0)
+                free(newenv[i]);
+            free(newenv);
+            return (NULL);
+        }
+		i++;
+    }
+    newenv[env_size] = NULL;
+    return (newenv);
+}
+
+// only absolute or relative routes
+void	execute_cd(t_section *current)
+{
+	int		i;
+	char	**new_env;
+	char	*var_pwd;
+	char	*var_oldpwd;
+
+	var_oldpwd = NULL;
 	i = 0;
 	if (current->next || !current->cmdv[1])
 		return ;
@@ -150,5 +200,18 @@ void	execute_cd(t_section *current)
 	}
 	if (chdir(current->cmdv[1]) == -1)
 		exit(1);
-	//actualizar env(solo pwd y oldpwd)
+	var_pwd = ft_strjoin("PWD=", current->cmdv[1]);
+	i = 0;
+	while (current->info->env[i])
+	{
+		if (ft_strncmp_pipex(current->info->env[i], "PWD=", 4) == 0)
+			var_oldpwd = ft_strjoin("OLD", current->info->env[i]);
+		i++;
+	}
+	new_env = new_wd_environment(current->info->env, var_pwd, var_oldpwd);
+	matrix_free(current->info->env);
+	free(var_pwd);
+	if (var_oldpwd)
+		free(var_oldpwd);
+	current->info->env = new_env;
 }

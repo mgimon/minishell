@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 19:56:25 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/16 19:30:57 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:26:13 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,21 @@ void	free_sections_list(t_section *first)
 		first = tmp;
 	}
 	free(first_ptr);
+}
+
+void	free_tokens_list(t_token *first)
+{
+    t_token *current;
+    t_token *next_node;
+
+	current = first;
+	next_node = NULL;
+    while (current)
+    {
+        next_node = current->next;
+        if (current->str)
+            free(current->str);
+        free(current);
+        current = next_node;
+    }
 }

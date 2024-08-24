@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:49:28 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/21 16:14:59 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/24 15:29:04 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,20 @@ char    **remove_env_line(t_section *current, int line)
     j = 0;
     while (current->info->env[i])
         i++;
-    new_env = (char **)malloc((i - 1) * sizeof(char *));
+    new_env = (char **)malloc(i * sizeof(char *));
     i = 0;
     while (current->info->env[i])
     {
         if (i != line)
         {   
             new_env[j] = ft_strdup(current->info->env[i]);
+			if (!new_env[j])
+			{
+				while (j > 0)
+					free(new_env[--j]);
+				free(new_env);
+				return (current->info->env);
+			}
             j++;
         }
         i++;

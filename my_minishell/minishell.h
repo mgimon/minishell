@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/21 16:03:49 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:17:36 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -71,7 +72,11 @@ typedef	struct	s_general
 }	t_general;
 
 // tokenizer.c
-void	tokenizer(t_general *info, char *input);
+// void	tokenizer(t_general *info, char *input);
+
+// tokens.c
+t_token	*reverse_copy_list(t_token *tokens_list);
+void	tokenize_input(t_general *info, char *input);
 
 // sections.c
 t_section	*create_sections_list(t_general *info);
@@ -80,7 +85,7 @@ t_section	*create_sections_list(t_general *info);
 void	executor(t_general *info);
 
 // prints.c
-void    print_token_list(t_general *info);
+void    print_tokens_list(t_token *tokens_list);
 void    print_matrix(char **matrix);
 void    print_string_to_stderror(char *str);
 void    print_sections_info(t_section *section);
@@ -88,6 +93,7 @@ void    print_sections_info(t_section *section);
 // frees.c
 void	matrix_free(char **str);
 void	free_sections_list(t_section *first);
+void    free_tokens_list(t_token *first);
 
 // utils_1.c
 int		thereis_pipe(t_token *first);
@@ -113,12 +119,7 @@ void	set_path(t_section *section);
 // utils_4.c
 char    *add_var_equal(char *cmdv1);
 char    **remove_env_line(t_section *current, int line);
-
-// tokenizer_2.c
-int		recalculate_tokens(t_general *info);
-void	add_token(t_general *info, char *word, int type);
-void	tokenize_input(t_general *info, char *input);
-void	free_tokens_list(t_general *info);
+int		is_directory(const char *path);
 
 // builtins_1.c
 int		execute_echo(t_section *current);

@@ -6,24 +6,28 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:18:36 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/11 17:07:12 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:55:25 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    print_token_list(t_general *info)
+void    print_tokens_list(t_token *tokens_list)
 {
     int i;
+	t_token *tmp;
 
+	tmp = tokens_list;
+	if (!tmp)
+		return ;
     i = 0;
-    printf("Print token list: \n");
-    while (i < info->number_of_tokens)
-    {
-        printf("%s ", info->tokens_list[i].str);
-        i++;
-    }
-    printf("\n");
+	printf("------------IMPRIMIENDO TOKENS-------------\n");
+	while (tmp)
+	{
+		printf("El token numero[%d] (%s) tiene tipo %d\n", i, tmp->str, tmp->type);
+		i++;
+		tmp = tmp->next;
+	}
 }
 
 void    print_matrix(char **matrix)
