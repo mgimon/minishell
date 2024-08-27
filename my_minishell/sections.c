@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/23 20:39:20 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:23:02 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	init_section_objects(t_general *info, t_token *first, t_section *section, i
 	int	i;
 
 	i = 0;
+	section->gottofree = 0;
 	set_files_section(section, first, s);
 	set_cmdv_section(section, first, s);
 	section->env = info->env;

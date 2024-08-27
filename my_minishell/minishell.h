@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/23 19:17:36 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:16:04 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct	s_file
 
 typedef struct	s_section
 {
+	int					gottofree;
 	struct s_general	*info;
 	struct s_section	*next;
 	t_file				*files;
