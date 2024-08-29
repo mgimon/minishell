@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/27 21:17:20 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:56:48 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,10 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 		free_sections_list(current->info->sections);
 		exit(0);
 	}
-	write(2, "PRINTANDO ENV\n", 14);
-	int i = 0;
-	int j = 0;
-	while (current->info->env[i])
-	{
-		j = 0;
-		while (current->info->env[i][j])
-		{
-			write(2, &current->info->env[i][j], 1);
-			j++;
-		}
-		write(2, "\n", 1);
-		i++;
-	}
 	execve(current->path, current->cmdv, current->info->env);
 	current->gottofree = 1;
-	write(2, "Error: Command not found\n", 25);
+	put_str_fd(2, current->cmdv[0]);
+	put_str_fd(2, ": Command not found\n");
 	exit(127);
 }
 
@@ -84,12 +71,21 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 		exit(EXIT_FAILURE);
 	}
 	if (WIFEXITED(status))
+	{
 		printf("Process %d exited with status %d\n", pid, WEXITSTATUS(status));
+		(*current)->info->exit_status = WEXITSTATUS(status);
+	}
 	else if (WIFSIGNALED(status))
+	{
 		printf("Process %d was killed by signal %d\n", pid, WTERMSIG(status));
+		(*current)->info->exit_status = WTERMSIG(status);
+	}
 	else if (WIFSTOPPED(status))
+	{
 		printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
-	if (WEXITSTATUS(status) != 0)
+		(*current)->info->exit_status = WSTOPSIG(status);
+	}
+	if (WEXITSTATUS(status) != 0 && WEXITSTATUS(status) != 127)
 		perror("");
 	exec_if_builtin_2(*current);
 	*current = (*current)->next;

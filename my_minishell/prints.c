@@ -6,11 +6,26 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:18:36 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/23 18:55:25 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:50:22 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	put_str_fd(int fd, char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while(str[i])
+		{
+			write(fd, &str[i], 1);
+			i++;
+		}
+	}
+}
 
 void    print_tokens_list(t_token *tokens_list)
 {

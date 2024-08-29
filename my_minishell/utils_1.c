@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 15:32:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/23 20:26:08 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:09:05 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	set_paths_and_env(t_general *info, char **env)
 
 	i = 0;
 	tmp = NULL;
+	info->exit_status = 0;
 	while (env[i])
 		i++;
 	info->env = (char **)malloc((i + 1) * sizeof(char *));

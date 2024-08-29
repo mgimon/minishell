@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/24 14:14:28 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:23:07 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,21 @@ void sigterm_handler(int signo)
 int main(int argc, char **argv, char **env)
 {
     char *input;
-    t_general info; // Declaración de la estructura necesaria
-    //const char *history_file = ".minishell_history";
+    t_general info;
+    const char *history_file;
+	(void)argv;
 
-    // Init
-    (void)argc;
-    (void)argv;
+    history_file = ".minishell_history";
 	info.number_of_tokens = 0;
 	info.tokens_list = NULL;
-
-    // Configuración del manejo de señales
+	if (argc != 1)
+		return (0);
     signal(SIGINT, sigint_handler);   // Para ctrl+C
     signal(SIGQUIT, sigquit_handler); // Para ctrl+"\"
 	signal(SIGTERM, sigterm_handler); // Para el builtin exit
 
-    //using_history();
-    //read_history(history_file);
+    using_history();
+    read_history(history_file);
 
 	set_paths_and_env(&info, env);
     while (1)
@@ -83,29 +82,28 @@ int main(int argc, char **argv, char **env)
 		}
 		if (*input)
 		{
-            //add_history(input); // Añade al historial si no es una entrada vacía
+            add_history(input); // Añade al historial si no es una entrada vacía
 
             tokenize_input(&info, input);
 			t_token	*new_tokens_list = reverse_copy_list(info.tokens_list);
             free_tokens_list(info.tokens_list);
 			info.tokens_list = new_tokens_list;
-			//tokenizer(&info, input);
-			print_tokens_list(info.tokens_list);
+			expand_expandable_tokens(&info);
+			//print_tokens_list(info.tokens_list);
 
 			info.sections = create_sections_list(&info);
-			print_sections_info(info.sections);
+			//print_sections_info(info.sections);
 
 			executor(&info);
 
-			print_matrix(info.env);
-			printf("\n\nLos nuevos paths son: \n\n");
-			print_matrix(info.paths);
+			//print_matrix(info.env);
+			//printf("\n\nLos nuevos paths son: \n\n");
+			//print_matrix(info.paths);
 			free_sections_list(info.sections);            
             free_tokens_list(info.tokens_list);
 		}
         free(input);
     }
-    // Conservar el historial de comandos para futuras sesiones
-    //write_history(history_file);
+    write_history(history_file); // Conservar el historial de comandos para futuras sesiones
     return 0;
 }

@@ -5,10 +5,11 @@ LIB_DIR     = ./libft/
 LIB_NAME    = libft.a
 LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))
 
-SRCS        = main.c tokenizer.c executor.c prints.c \
+SRCS        = main.c executor.c prints.c \
 				utils_1.c sections.c utils_2.c \
 				utils_3.c builtins_1.c frees.c \
 				builtins_2.c utils_4.c tokens.c \
+				expansions.c
 
 OBJS        = $(SRCS:.c=.o)
 

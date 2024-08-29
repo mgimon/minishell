@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/27 19:23:02 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:02:22 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	set_files_section(t_section *section, t_token *first, int s)
 	i = 0;
 	tmp = get_first_in_section(first, s);
 	n = count_files_per_section(tmp);
-	printf("Section found. Contains %d files\n\n", n);
+	//printf("Section found. Contains %d files\n\n", n);
 	if (n == 0)
 	{
 		section->files = NULL;

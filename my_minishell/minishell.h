@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/27 19:16:04 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:50:58 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct	s_section
 
 typedef	struct	s_general
 {
+	int					exit_status;
 	int					number_of_tokens;
 	struct s_token		*tokens_list;
 	char				**env;
@@ -72,12 +73,12 @@ typedef	struct	s_general
 	struct s_section	*sections;
 }	t_general;
 
-// tokenizer.c
-// void	tokenizer(t_general *info, char *input);
-
 // tokens.c
 t_token	*reverse_copy_list(t_token *tokens_list);
 void	tokenize_input(t_general *info, char *input);
+
+// expansions.c
+void	expand_expandable_tokens(t_general *info);
 
 // sections.c
 t_section	*create_sections_list(t_general *info);
@@ -86,6 +87,7 @@ t_section	*create_sections_list(t_general *info);
 void	executor(t_general *info);
 
 // prints.c
+void	put_str_fd(int fd, char *str);
 void    print_tokens_list(t_token *tokens_list);
 void    print_matrix(char **matrix);
 void    print_string_to_stderror(char *str);
