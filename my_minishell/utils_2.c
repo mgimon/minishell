@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 16:58:22 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/07/31 17:38:02 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 21:10:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	open_files_section(t_section *section)
 			if (section->fd_write != -1)
 				close(section->fd_write);
 			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			if (section->fd_write == -1)
+				exit(1);
 		}
 		else if (tmp->open_mode == 4)
 		{

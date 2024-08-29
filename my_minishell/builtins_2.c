@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/24 15:47:14 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:44:47 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ void	execute_unset(t_section *current)
 				matrix_free(current->info->env);
 				current->info->env = new_env;
 				if (ft_strcmp(current->cmdv[1], "PATH") == 0)
+				{
 					matrix_free(current->info->paths);
-				current->info->paths = NULL;
+					current->info->paths = NULL;
+				}
 			}
 			else
 				free(var_equal);
@@ -189,14 +191,11 @@ void	execute_cd(t_section *current)
 		return ;
 	if (!is_directory(current->cmdv[1]))
 	{
-		write(2, "\ncd: no such file or directory: ", 32);
-		while (current->cmdv[1][i])
-		{
-			write(2, &current->cmdv[1][i], 1);
-			i++;
-		}
+		put_str_fd(2, "cd: no such file or directory: ");
+		put_str_fd(2, current->cmdv[1]);
 		write(2, "\n", 1);
-		exit(1);
+		current->info->exit_status = 1;
+		return ;
 	}
 	if (chdir(current->cmdv[1]) == -1)
 		exit(1);

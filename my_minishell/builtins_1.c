@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:05:39 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/18 18:23:01 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:55:53 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ int	execute_env(t_section *current)
 	return (0);
 }
 
-int	execute_exit(t_section *current)
+void	execute_exit(t_section *current)
 {
 	if (!current->next)
 		kill(0, SIGTERM);
-	return (0);
+	exit(0);
 }

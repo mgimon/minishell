@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/21 16:02:57 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:55:01 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	exec_if_builtin_1(t_section *current)
 	else if (ft_strcmp(current->cmdv[0], "env") == 0)
 		output = execute_env(current);
 	else if (ft_strcmp(current->cmdv[0], "exit") == 0)
-		output = execute_exit(current);
+		output = 0;
 	else if (ft_strcmp(current->cmdv[0], "cd") == 0)
 		output = 0;
 	else if (ft_strcmp(current->cmdv[0], "export") == 0)
@@ -125,4 +125,6 @@ void	exec_if_builtin_2(t_section *current)
 		execute_export(current);
 	else if (ft_strcmp(current->cmdv[0], "cd") == 0)
 		execute_cd(current);
+	else if (ft_strcmp(current->cmdv[0], "exit") == 0)
+		execute_exit(current);
 }
