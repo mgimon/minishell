@@ -1,0 +1,40 @@
+
+CORRECCIONES DE GENERALES
+
++ EXPANSIONES - parece que funcionan bien, revisar
++ SYNTAX ERRORS - validar antes de tokenizar
+
++ SENHALES ??
++ HEREDOC !
+
++ Norminette A FULL
++ Protecciones de mallocs
+
+
+OTRAS
++ Chequeos de prompts variados
++ < vehicles.txt cat > outfile.txt > empty.txt wc <<heredoc >>outapp tatata toma como **cmdv = {cat} {wc} {tatata}
++ <<infile cat -e | cat"-e"'a' | "wc -w" | 'wc -w' | wc -w >> outfile && echo $USER"$USER"'$USER "   <>||&&| '      -> Comprobar con bash
+(FALLO A NO CORREGIR -----------> Si falla un open, no deberia crear los siguientes archivos)
+
+
+Vehicles.txt contiene:
+
+mitsubishi car year 2006
+honda motorbike year 2012
+yamaha powerboat year 2022
+toyota car year 2015
+suzuki motorbike year 2019
+sea-doo powerboat year 2020
+nissan car year 2018
+kawasaki motorbike year 2016
+bayliner powerboat year 2021
+ford car year 2017
+ducati motorbike year 2014
+chaparral powerboat year 2023
+chevrolet car year 2020
+bmw motorbike year 2018
+mastercraft powerboat year 2019
+
+
+

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:49:28 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 17:46:52 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/30 23:09:12 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,36 @@ int	is_directory(const char *path)
             return (1);
     }
     return (0);
+}
+
+char *ft_getenv(const char *name, char **env)
+{
+    char 	prefix[256];
+    size_t 	name_len;
+    char 	**current;
+	size_t	i;
+
+	i = 0;
+    if (name == NULL || env == NULL)
+        return (NULL);
+
+    name_len = ft_strlen(name);
+    if (name_len + 1 >= sizeof(prefix))
+        return (NULL);
+    while (i < name_len)
+	{
+        prefix[i] = name[i];
+		i++;
+	}
+    prefix[name_len] = '=';
+    prefix[name_len + 1] = '\0';
+
+    current = env;
+    while (*current != NULL)
+	{
+        if (ft_strncmp(*current, prefix, name_len + 1) == 0)
+            return (*current + name_len + 1);
+        current++;
+    }
+    return (NULL);
 }

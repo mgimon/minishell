@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 20:57:01 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/08/30 21:42:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,11 @@ void	set_path(t_section *section);
 char    *add_var_equal(char *cmdv1);
 char    **remove_env_line(t_section *current, int line);
 int		is_directory(const char *path);
+char	*ft_getenv(const char *name, char **env);
+
+// utils_5.c
+void	fill_expanded_string(const char *src, char *dest, char **env);
+int		calculate_new_length(const char *str, char **env);
 
 // builtins_1.c
 int		execute_echo(t_section *current);
