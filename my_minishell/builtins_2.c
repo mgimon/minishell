@@ -304,8 +304,9 @@ void	execute_cd(t_section *current)
 	char	**new_env;
 	char	*var_pwd;
 	char	*var_oldpwd;
+	char	*content;
 
-
+	content = NULL;
 	var_oldpwd = NULL;
 	i = 0;
 	if (current->cmdv[2])
@@ -326,9 +327,15 @@ void	execute_cd(t_section *current)
 			exit(1);
 	}
 	if ( !current->cmdv[1] || ft_strcmp(current->cmdv[1], "../") == 0)
-		var_pwd = ft_strjoin("PWD=", get_prev_dir(current->info->env));
+	{
+		content = get_prev_dir(current->info->env);
+		var_pwd = ft_strjoin("PWD=", content);
+	}
 	else if (ft_strcmp(current->cmdv[1], "~") == 0)
-		var_pwd = ft_strjoin("PWD=", get_home(current->info->env));
+	{
+		content = get_home(current->info->env);
+		var_pwd = ft_strjoin("PWD=", content);
+	}
 	else
 		var_pwd = ft_strjoin("PWD=", current->cmdv[1]);
 	i = 0;
@@ -343,5 +350,7 @@ void	execute_cd(t_section *current)
 	free(var_pwd);
 	if (var_oldpwd)
 		free(var_oldpwd);
+	if (content)
+		free(content);
 	current->info->env = new_env;
 }
