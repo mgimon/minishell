@@ -91,3 +91,39 @@ void fill_expanded_string(const char *src, char *dest, char **env)
     }
     dest[j] = '\0';
 }
+
+char	*clean_str_exit(char *str)
+{
+	int	i;
+	int	j;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	while (str[i] == ' ')
+		i++;
+	if (!(str[i] >= '0' && str[i] <= '9'))
+		return (NULL);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		i++;
+		j++;
+	}
+	while (str[i] == ' ')
+		i++;
+	if (str[i] != '\0')
+		return (NULL);
+	result = malloc(sizeof(char) * (j + 1));
+	j = 0;
+	i = 0;
+	while (str[i] == ' ')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result[j] = str[i];
+		i++;
+		j++;
+	}
+	result[j] = '\0';
+	return (result);
+}

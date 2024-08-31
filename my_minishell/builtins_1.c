@@ -98,7 +98,35 @@ int	execute_env(t_section *current)
 
 void	execute_exit(t_section *current)
 {
-	if (!current->next)
+	char		*str;
+	int		status;
+	long int	value;
+
+	str = NULL;
+	value = 0;
+	if (current->next)
+		return ;
+	if (!current->cmdv[1])
+	{
 		kill(0, SIGTERM);
-	exit(0);
+		exit(0);
+	}
+	if (current->cmdv[2])
+	{
+		put_str_fd(2, "Exit: too many arguments\n");
+		exit(1);
+	}
+	str = clean_str_exit(current->cmdv[1]);
+	if (str)
+		value = strtol(str, NULL, 10);
+	if (!str || errno == ERANGE || value > LONG_MAX || value < LONG_MIN)
+	{
+		put_str_fd(2, "Exit: numeric argument required\n");
+		if (str)
+			free(str);
+		exit(2);
+	}
+	status = (int)(value % 256);
+	free(str);
+	exit(status);
 }

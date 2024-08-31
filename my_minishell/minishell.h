@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <unistd.h>
 # include <signal.h>
 # include <sys/wait.h>
@@ -128,6 +129,7 @@ char	*ft_getenv(const char *name, char **env);
 // utils_5.c
 void	fill_expanded_string(const char *src, char *dest, char **env);
 int		calculate_new_length(const char *str, char **env);
+char	*clean_str_exit(char *str);
 
 // builtins_1.c
 int		execute_echo(t_section *current);
