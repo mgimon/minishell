@@ -88,6 +88,7 @@ void	set_paths_and_env(t_general *info, char **env)
 	int		i;
 	char	*tmp;
 
+	set_exports(info, env);
 	i = 0;
 	tmp = NULL;
 	info->exit_status = 0;

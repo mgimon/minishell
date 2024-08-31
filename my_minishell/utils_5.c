@@ -12,6 +12,34 @@
 
 #include "minishell.h"
 
+void    add_str_to_matrix(char ***matrix, char *str)
+{
+    int     i;
+    char    **new_matrix;
+
+    if (!matrix || !str)
+        return;
+
+    i = 0;
+    while ((*matrix)[i])
+        i++;
+    new_matrix = (char **)malloc(sizeof(char *) * (i + 2));
+    if (!new_matrix)
+        return;
+
+    i = 0;
+    while ((*matrix)[i])
+    {
+        new_matrix[i] = (*matrix)[i];
+        i++;
+    }
+    new_matrix[i] = str;
+    new_matrix[i + 1] = NULL;
+
+    free(*matrix);
+    *matrix = new_matrix;
+}
+
 int calculate_new_length(const char *str, char **env)
 {
     int     i;

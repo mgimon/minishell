@@ -116,7 +116,20 @@ void	execute_export(t_section *current)
 	i = 0;
 	j = 0;
 	new_paths = NULL;
-	if (current->next || !current->cmdv[1] || current->cmdv[1][0] == '\0' || !ft_strchr(current->cmdv[1], '='))
+	if (current->next)
+		return ;
+	if (!current->cmdv[1])
+	{
+		print_matrix(current->info->exports);
+		return ;
+	}
+	if (current->cmdv[1][0] >= '0' && current->cmdv[1][0] <= '9')
+	{
+		put_str_fd(2, "Export: not a valid identifier\n");
+		return ;
+	}
+	add_str_to_matrix(&current->info->exports, ft_strjoin("declare -x ", current->cmdv[1]));
+	if (!ft_strchr(current->cmdv[1], '='))
 		return ;
 	new_line = ft_strdup(current->cmdv[1]);
 	current->info->env = if_remove_var_env(current);

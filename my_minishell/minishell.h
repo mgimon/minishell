@@ -70,6 +70,7 @@ typedef	struct	s_general
 	int					number_of_tokens;
 	struct s_token		*tokens_list;
 	char				**env;
+	char				**exports;
 	char				**paths;
 	struct s_section	*sections;
 }	t_general;
@@ -125,8 +126,10 @@ char    *add_var_equal(char *cmdv1);
 char    **remove_env_line(t_section *current, int line);
 int		is_directory(const char *path);
 char	*ft_getenv(const char *name, char **env);
+void	set_exports(t_general *info, char **env);
 
 // utils_5.c
+void	add_str_to_matrix(char ***matrix, char *str);
 void	fill_expanded_string(const char *src, char *dest, char **env);
 int		calculate_new_length(const char *str, char **env);
 char	*clean_str_exit(char *str);

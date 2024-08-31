@@ -12,6 +12,27 @@
 
 #include "minishell.h"
 
+void	set_exports(t_general *info, char **env)
+{
+    int     i;
+
+    i = 0;
+    while (env[i])
+        i++;
+    info->exports = (char **)malloc(sizeof(char *) * (i + 1));
+    if (!info->exports)
+        return ;
+    i = 0;
+    while (env[i])
+    {
+        info->exports[i] = ft_strjoin("declare -x ", env[i]);
+        if (!info->exports[i])
+            return ;
+        i++;
+    }
+    info->exports[i] = NULL;
+}
+
 char    *add_var_equal(char *cmdv1)
 {
     char    *result;
