@@ -73,6 +73,7 @@ int	execute_pwd(t_section *current)
 		write(STDOUT_FILENO, &tmp[i], 1);
 		i++;
 	}
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 

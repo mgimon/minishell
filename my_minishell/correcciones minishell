@@ -1,13 +1,11 @@
 
 CORRECCIONES DE GENERALES
 
-+ BUILTIN exit - exit con solo un argumento numerico. probar exit "    123    ". Asegurarse de que se devuelva el ult status por el return del main
-+ BUILTIN exit - exit | ls > no hacer nada cuando el prompt es complejo
-+ BUILTIN export sin argumentos
-+ BUILTIN export con argumento vacio lo anade a la lista del export pero no al env
-+ BUILTIN export con += anade a variable existente y la pasa al env
++ Limpiar leaks de cd y error extrano (No such file or directory, despues del prompt cd ~)
++ BUILTIN export con += ???
 + <in se tokeniza como < in
 + EXPANSIONES - expandir a string vacio cuando la variable no esta en el env
+
 + SYNTAX ERRORS - validar despues de tokenizar y antes de expandir
 + Poner los waits despues de ejecutar todas las secciones para que los procesos se ejecuten todos a la vez. solo el numero de procesos que haya pedido abrir (el programa termina despues)
 
