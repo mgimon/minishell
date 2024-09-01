@@ -36,6 +36,7 @@ void	execute_unset(t_section *current)
 			if (new_env)
 			{
 				free(var_equal);
+				var_equal = NULL;
 				matrix_free(current->info->env);
 				current->info->env = new_env;
 				if (ft_strcmp(current->cmdv[1], "PATH") == 0)
@@ -44,12 +45,12 @@ void	execute_unset(t_section *current)
 					current->info->paths = NULL;
 				}
 			}
-			else
-				free(var_equal);
 			break ;
 		}
 		i++;
 	}
+	if (var_equal)
+		free(var_equal);
 }
 
 char *get_var_name(const char *var)
