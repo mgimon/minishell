@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 19:23:07 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:22:02 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int main(int argc, char **argv, char **env)
 			t_token	*new_tokens_list = reverse_copy_list(info.tokens_list);
             free_tokens_list(info.tokens_list);
 			info.tokens_list = new_tokens_list;
-			expand_expandable_tokens(&info);
 			//print_tokens_list(info.tokens_list);
 
 			info.sections = create_sections_list(&info);

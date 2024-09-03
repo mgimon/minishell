@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/30 21:42:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:21:30 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,6 @@ typedef	struct	s_general
 // tokens.c
 t_token	*reverse_copy_list(t_token *tokens_list);
 void	tokenize_input(t_general *info, char *input);
-
-// expansions.c
-void	expand_expandable_tokens(t_general *info);
 
 // sections.c
 t_section	*create_sections_list(t_general *info);
