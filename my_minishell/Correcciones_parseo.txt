@@ -1,0 +1,41 @@
+
+1. Chequeos de Syntax Error
+2. Tokenizacion y expansiones
+
+	-$VARIABLE expande a su valor (si esta en el env)
+	-$VARIABLE expande a NULL (si no esta en el env)
+	-"$VARIABLE" expande a " " (si no esta en el env)
+
+	-'$USER' expande como $USER (no expande)
+	-"'$USER'" expande a su valor (si esta en el env)
+	-"'$USER'" expande a " " (si no esta en el env)
+
+	-$? expande al ultimo exit status
+	-"$?" expande al ultimo exit status
+	-"""$?""" expande al ultimo exit status
+
+	-Todo esto puede concatenarse. E.g.: si el ultimo exit status es 127, "$?$?bla$?bla" expande como 127127bla127bla
+
+
+
+ALGUNOS PROMPTS
+
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ ""GFSGDFG""
+GFSGDFG: command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ """GFSGDFG""
+> ^C
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ """GFSGDFG""
+> "
+GFSGDFG
+: command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ """GFSGDFG"
+GFSGDFG: command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ "A""GFSGDFG"
+AGFSGDFG: command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ "A""GFSGDFG"'$USER'"$USER''''"
+AGFSGDFG$USERmgimon-c'''': command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ "A""GFSGDFG"'$USER'"$USER''''"$USER
+AGFSGDFG$USERmgimon-c''''mgimon-c: command not found
+mgimon-c@car7s2:~/Desktop/minishell_repo/my_minishell$ "A""GFSGDFG"'$USER' "$USER''''"$USER
+AGFSGDFG$USER: command not found
+
