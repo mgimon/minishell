@@ -9,7 +9,7 @@ SRCS        = main.c executor.c prints.c \
 				utils_1.c sections.c utils_2.c \
 				utils_3.c builtins_1.c frees.c \
 				builtins_2.c utils_4.c tokens.c \
-				utils_5.c \
+				utils_5.c tokenizer.c \
 
 OBJS        = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 17:56:48 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/13 23:00:52 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 // si el execve no termina el proceso, gestiona el error cmdnotfound
 void	child_process(t_section *current, int prev_fd, int *pipefd)
 {
+	write_in_heredocs(current);
+	printf("El fd read es %d\n", current->fd_read);
 	if (current->fd_read != -1)
 	{
 		dup2(current->fd_read, STDIN_FILENO);
@@ -45,6 +47,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 		free_sections_list(current->info->sections);
 		exit(0);
 	}
+	fprintf(stderr, "El fd write es %d\n", current->fd_write);
 	execve(current->path, current->cmdv, current->info->env);
 	current->gottofree = 1;
 	put_str_fd(2, current->cmdv[0]);

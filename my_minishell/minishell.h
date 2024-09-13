@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/03 18:21:30 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/13 22:31:58 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,20 @@ typedef struct	s_file
 	int				open_mode;
 }	t_file;
 
+typedef struct	s_heredoc
+{
+	struct s_heredoc	*next;
+	char				*delimiter;
+	int					fds[2];
+}	t_heredoc;
+
 typedef struct	s_section
 {
 	int					gottofree;
 	struct s_general	*info;
 	struct s_section	*next;
 	t_file				*files;
+	t_heredoc			*heredocs;
 	int					fd_read;
 	int					fd_write;
 	char				**env;
@@ -76,6 +84,7 @@ typedef	struct	s_general
 }	t_general;
 
 // tokens.c
+void    tokenizer(t_general *info, char *input);
 t_token	*reverse_copy_list(t_token *tokens_list);
 void	tokenize_input(t_general *info, char *input);
 
@@ -91,6 +100,7 @@ void    print_tokens_list(t_token *tokens_list);
 void    print_matrix(char **matrix);
 void    print_string_to_stderror(char *str);
 void    print_sections_info(t_section *section);
+void    print_matrix_stderror(char **matrix);
 
 // frees.c
 void	matrix_free(char **str);
@@ -127,9 +137,9 @@ void	set_exports(t_general *info, char **env);
 
 // utils_5.c
 void	add_str_to_matrix(char ***matrix, char *str);
-void	fill_expanded_string(const char *src, char *dest, char **env);
-int		calculate_new_length(const char *str, char **env);
-char	*clean_str_exit(char *str);
+void    allocate_heredocs(t_section *section, t_token *first);
+void	write_in_heredocs(t_section *current);
+char    *clean_str_exit(char *str);
 
 // builtins_1.c
 int		execute_echo(t_section *current);

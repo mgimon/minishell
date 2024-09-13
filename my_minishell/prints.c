@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:18:36 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 17:50:22 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/12 21:50:15 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,20 @@ void	print_string_to_stderror(char *str)
 	while (str[i])
 	{
 		write(2, &str[i], 1);
+		i++;
+	}
+}
+
+void	print_matrix_stderror(char **matrix)
+{
+	int	i;
+
+	i = 0;
+	if (!matrix)
+		return ;
+	while (matrix[i])
+	{
+		print_string_to_stderror(matrix[i]);
 		i++;
 	}
 }

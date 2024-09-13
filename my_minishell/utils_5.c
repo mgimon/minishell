@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 21:35:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/30 23:09:15 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/13 23:01:33 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,84 +40,53 @@ void    add_str_to_matrix(char ***matrix, char *str)
     *matrix = new_matrix;
 }
 
-int calculate_new_length(const char *str, char **env)
+void	allocate_heredocs(t_section *section, t_token *first)
 {
-    int     i;
-    int     j;
-    int     start;
-    int     len;
-    char    *var_name;
-    char    *value;
-
-	i = 0;
-	j = 0;
-    while (str[i])
+    t_token     *tmp;
+    t_heredoc   *tmp_hdocs;
+    t_heredoc   *new_hdoc;
+    int         count;
+    
+    tmp = first;
+    count = 0;
+    if (!first)
+        return ;
+    while (tmp)
     {
-        if (str[i] == '$' && str[i + 1] && str[i + 1] != '$' && str[i + 1] != ' ')
-        {
-            start = i + 1;
-            i++;
-            while (str[i] && (str[i] == '_' || ft_isalnum(str[i])))
-                i++;
-            len = i - start;
-            var_name = ft_substr(str, start, len);
-            if (var_name)
-            {
-                value = ft_getenv(var_name, env);
-                free(var_name);
-                if (value)
-                    j += ft_strlen(value);
-                //free(value);
-            }
-        }
-        else
-        {
-            j++;
-            i++;
-        }
+        if (ft_strcmp(tmp->str, "<<") == 0)
+            count++;
+        tmp = tmp->next;
     }
-    return j;
-}
-
-void fill_expanded_string(const char *src, char *dest, char **env)
-{
-	int		i;
-	int		j;
-	int		k;
-	int		start;
-	int		len;
-    char	*var_name;
-	char	*value;
-
-	i = 0;
-	j = 0;
-    while (src[i])
+    
+    if (!count)
     {
-        if (src[i] == '$' && src[i + 1] && src[i + 1] != '$' && src[i + 1] != ' ')
-        {
-            start = i + 1;
-            i++;
-            while (src[i] && (src[i] == '_' || ft_isalnum(src[i])))
-                i++;
-            len = i - start;
-            var_name = ft_substr(src, start, len);
-            if (var_name)
-            {
-                value = ft_getenv(var_name, env);
-                free(var_name);
-                if (value)
-                {
-                    k = 0;
-                    while (value[k])
-                        dest[j++] = value[k++];
-                   //free(value);
-                }
-            }
-        }
-        else
-            dest[j++] = src[i++];
+        section->heredocs = NULL;
+        return ;
     }
-    dest[j] = '\0';
+
+    section->heredocs = malloc(sizeof(t_heredoc));
+    tmp_hdocs = section->heredocs;
+    tmp = first;
+    while (tmp)
+    {
+        if (ft_strcmp(tmp->str, "<<") == 0)
+        {
+            if (!tmp->next)
+                break ;
+            tmp_hdocs->delimiter = ft_strdup((tmp->next)->str);
+			pipe(tmp_hdocs->fds);
+            if (count > 1)
+            {
+                new_hdoc = malloc(sizeof(t_heredoc)); 
+                tmp_hdocs->next = new_hdoc;
+                tmp_hdocs = new_hdoc;
+            }
+            else
+                tmp_hdocs->next = NULL;
+            count--;
+        }
+        tmp = tmp->next;
+    }
 }
 
 char	*clean_str_exit(char *str)
@@ -154,4 +123,50 @@ char	*clean_str_exit(char *str)
 	}
 	result[j] = '\0';
 	return (result);
+}
+
+void write_in_heredocs(t_section *current)
+{
+    char		buffer[1024];
+    ssize_t		len;
+	t_heredoc	*tmp_hdoc;
+	t_heredoc	*tmp_hdoc2;
+	int	i = 0;
+
+	tmp_hdoc = current->heredocs;
+	tmp_hdoc2 = current->heredocs;
+	while (tmp_hdoc2)
+	{
+		fprintf(stderr, "El delimiter del heredoc %d es: %s\n", i, tmp_hdoc2->delimiter);
+		fprintf(stderr, "El fd[0] del heredoc %d es: %d\n", i, tmp_hdoc2->fds[0]);
+		fprintf(stderr, "El fd[1] del heredoc %d es: %d\n", i, tmp_hdoc2->fds[1]);
+		tmp_hdoc2 = tmp_hdoc2->next;
+		i++;
+	}
+    if (!current || !current->heredocs)
+        return ;
+    while (tmp_hdoc)
+    {
+        while (1)
+        {
+			write(1, "> ", 2);
+            len = read(0, buffer, sizeof(buffer) - 1);
+            if (len <= 0)
+                break;
+            buffer[len] = '\0';
+            if (len > 0 && buffer[len - 1] == '\n')
+                buffer[len - 1] = '\0';
+            if (ft_strcmp(buffer, tmp_hdoc->delimiter) == 0)
+                break;
+			printf("Escribiendo en el pipe heredoc: [%s]\n", buffer);
+            if (write(tmp_hdoc->fds[1], buffer, len) == -1)
+                return;
+			write(tmp_hdoc->fds[1], "\n", 1);
+			printf("Escribió salto de línea en pipe heredoc\n");
+        }
+		close(tmp_hdoc->fds[1]);
+        if (len <= 0)
+            break;
+		tmp_hdoc = tmp_hdoc->next;
+    }
 }

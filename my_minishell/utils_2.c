@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 16:58:22 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 21:10:19 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/13 21:40:59 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,11 @@ void	add_file_to_files(t_token *section_first, t_file *files, int *i, int n)
 	if (!section_first)
 		return ;
 	files[*i].string = ft_strdup((section_first->next)->str);
-	files[*i].open_mode = section_first->type;
+	if (ft_strcmp(section_first->str, "<<") == 0)
+		files[*i].open_mode = 9;
+	else
+		files[*i].open_mode = section_first->type;
+	printf("Archivo %s encontrado con open mode %d\n", files[*i].string, files[*i].open_mode);
 	if (*i == (n - 1))
 		files[*i].next = NULL;
 	else
@@ -87,9 +91,11 @@ void	add_file_to_files(t_token *section_first, t_file *files, int *i, int n)
 // necesaria para cerrarlos - arreglar
 void	open_files_section(t_section *section)
 {
-	t_file	*tmp;
+	t_file		*tmp;
+	t_heredoc	*tmp_hdocs;
 
 	tmp = section->files;
+	tmp_hdocs = section->heredocs;
 	while (tmp)
 	{
 		if (tmp->open_mode == 3)
@@ -97,6 +103,7 @@ void	open_files_section(t_section *section)
 			if (section->fd_write != -1)
 				close(section->fd_write);
 			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			printf("Fd write es %d\n", section->fd_write);
 			if (section->fd_write == -1)
 				exit(1);
 		}
@@ -106,11 +113,19 @@ void	open_files_section(t_section *section)
 				close(section->fd_write);
 			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_APPEND, 0666);
 		}
-		else if (tmp->open_mode == 5)
+		else if (tmp->open_mode == 5 || tmp->open_mode == 9)
 		{
 			if (section->fd_read != -1)
 				close(section->fd_read);
-			section->fd_read = open(tmp->string, O_RDONLY);
+			if (tmp->open_mode == 9)
+			{
+				if (tmp_hdocs)
+					section->fd_read = tmp_hdocs->fds[0];
+				tmp_hdocs = tmp_hdocs->next;
+			}
+			else
+				section->fd_read = open(tmp->string, O_RDONLY);
+			printf("Fd read es %d\n", section->fd_read);
 		}
 		tmp = tmp->next;
 	}	

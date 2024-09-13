@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 16:02:22 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/13 21:34:10 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	init_section_objects(t_general *info, t_token *first, t_section *section, i
 
 	i = 0;
 	section->gottofree = 0;
+	allocate_heredocs(section, first);
 	set_files_section(section, first, s);
 	set_cmdv_section(section, first, s);
 	section->env = info->env;
@@ -109,6 +110,7 @@ void	init_section_all_null(t_section *section)
 	section->paths = NULL;
 	section->path = NULL;
 	section->cmdv = NULL;
+	section->heredocs = NULL;
 }
 
 t_section	*create_sections_list(t_general *info)
