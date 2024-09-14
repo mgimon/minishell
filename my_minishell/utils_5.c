@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 21:35:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/13 23:01:33 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/14 21:25:02 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,21 +128,10 @@ char	*clean_str_exit(char *str)
 void write_in_heredocs(t_section *current)
 {
     char		buffer[1024];
-    ssize_t		len;
+    int			len;
 	t_heredoc	*tmp_hdoc;
-	t_heredoc	*tmp_hdoc2;
-	int	i = 0;
 
 	tmp_hdoc = current->heredocs;
-	tmp_hdoc2 = current->heredocs;
-	while (tmp_hdoc2)
-	{
-		fprintf(stderr, "El delimiter del heredoc %d es: %s\n", i, tmp_hdoc2->delimiter);
-		fprintf(stderr, "El fd[0] del heredoc %d es: %d\n", i, tmp_hdoc2->fds[0]);
-		fprintf(stderr, "El fd[1] del heredoc %d es: %d\n", i, tmp_hdoc2->fds[1]);
-		tmp_hdoc2 = tmp_hdoc2->next;
-		i++;
-	}
     if (!current || !current->heredocs)
         return ;
     while (tmp_hdoc)
@@ -159,7 +148,7 @@ void write_in_heredocs(t_section *current)
             if (ft_strcmp(buffer, tmp_hdoc->delimiter) == 0)
                 break;
 			printf("Escribiendo en el pipe heredoc: [%s]\n", buffer);
-            if (write(tmp_hdoc->fds[1], buffer, len) == -1)
+            if (write(tmp_hdoc->fds[1], buffer, len - 1) == -1)
                 return;
 			write(tmp_hdoc->fds[1], "\n", 1);
 			printf("Escribió salto de línea en pipe heredoc\n");
@@ -169,4 +158,17 @@ void write_in_heredocs(t_section *current)
             break;
 		tmp_hdoc = tmp_hdoc->next;
     }
+}
+
+void	close_section_hdocs_parent(t_section *current)
+{
+	t_heredoc	*tmp;
+
+	tmp = current->heredocs;
+	while (tmp)
+	{
+		close(tmp->fds[0]);
+		close(tmp->fds[1]);
+		tmp = tmp->next;
+	}
 }

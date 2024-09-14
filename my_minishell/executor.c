@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/13 23:00:52 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/14 21:25:53 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	}
 	else if (current->next == NULL && current->fd_write == -1)
 		close(pipefd[0]);
+/*	for (int i = 3; i < 20; i++)
+		close(i);*/
 	if (exec_if_builtin_1(current) == 0)
 	{
 		free_sections_list(current->info->sections);
@@ -57,6 +59,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 
 void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, int status)
 {
+	close_section_hdocs_parent(*current);
 	if (*prev_fd != -1)
 		close(*prev_fd);
 	if ((*current)->fd_read != -1)
@@ -68,6 +71,8 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
+	for (int i = 3; i < 20; i++)
+		close(i);
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
@@ -88,8 +93,6 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 		printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
 		(*current)->info->exit_status = WSTOPSIG(status);
 	}
-	if (WEXITSTATUS(status) != 0 && WEXITSTATUS(status) != 127)
-		perror("");
 	exec_if_builtin_2(*current);
 	*current = (*current)->next;
 }

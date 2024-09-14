@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/13 22:31:58 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/14 20:19:00 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ void	add_str_to_matrix(char ***matrix, char *str);
 void    allocate_heredocs(t_section *section, t_token *first);
 void	write_in_heredocs(t_section *current);
 char    *clean_str_exit(char *str);
+void    close_section_hdocs_parent(t_section *current);
 
 // builtins_1.c
 int		execute_echo(t_section *current);
