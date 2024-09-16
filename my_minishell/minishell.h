@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/14 20:19:00 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:13:26 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct	s_section
 	char				**paths;
 	char				*path;
 	char				**cmdv;
+	pid_t				pid;
 }	t_section;
 
 typedef	struct	s_general
@@ -106,6 +107,7 @@ void    print_matrix_stderror(char **matrix);
 void	matrix_free(char **str);
 void	free_sections_list(t_section *first);
 void    free_tokens_list(t_token *first);
+void	free_files(t_file *files);
 
 // utils_1.c
 int		thereis_pipe(t_token *first);
@@ -141,6 +143,7 @@ void    allocate_heredocs(t_section *section, t_token *first);
 void	write_in_heredocs(t_section *current);
 char    *clean_str_exit(char *str);
 void    close_section_hdocs_parent(t_section *current);
+void	close_all_process_files(void);
 
 // builtins_1.c
 int		execute_echo(t_section *current);

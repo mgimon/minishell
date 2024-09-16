@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/12 21:42:56 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/16 20:58:38 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ int main(int argc, char **argv, char **env)
 		{
             add_history(input); // Añade al historial si no es una entrada vacía
 
-			tokenizer(&info, input);
-            //tokenize_input(&info, input);
-			//t_token	*new_tokens_list = reverse_copy_list(info.tokens_list);
-            //free_tokens_list(info.tokens_list);
-			//info.tokens_list = new_tokens_list;
+			//tokenizer(&info, input);
+            tokenize_input(&info, input);
+			t_token	*new_tokens_list = reverse_copy_list(info.tokens_list);
+            free_tokens_list(info.tokens_list);
+			info.tokens_list = new_tokens_list;
 			//print_tokens_list(info.tokens_list);
 
 			info.sections = create_sections_list(&info);
@@ -96,7 +96,7 @@ int main(int argc, char **argv, char **env)
 			executor(&info);
 
 			free_sections_list(info.sections);            
-            //free_tokens_list(info.tokens_list);
+            free_tokens_list(info.tokens_list);
 		}
         free(input);
     }

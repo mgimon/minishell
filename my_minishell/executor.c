@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/14 21:25:53 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/16 22:13:30 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 void	child_process(t_section *current, int prev_fd, int *pipefd)
 {
 	write_in_heredocs(current);
-	printf("El fd read es %d\n", current->fd_read);
 	if (current->fd_read != -1)
 	{
 		dup2(current->fd_read, STDIN_FILENO);
@@ -42,14 +41,11 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	}
 	else if (current->next == NULL && current->fd_write == -1)
 		close(pipefd[0]);
-/*	for (int i = 3; i < 20; i++)
-		close(i);*/
 	if (exec_if_builtin_1(current) == 0)
 	{
 		free_sections_list(current->info->sections);
 		exit(0);
 	}
-	fprintf(stderr, "El fd write es %d\n", current->fd_write);
 	execve(current->path, current->cmdv, current->info->env);
 	current->gottofree = 1;
 	put_str_fd(2, current->cmdv[0]);
@@ -57,7 +53,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	exit(127);
 }
 
-void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, int status)
+void	parent_process(t_section **current, int *prev_fd, int *pipefd)
 {
 	close_section_hdocs_parent(*current);
 	if (*prev_fd != -1)
@@ -71,9 +67,8 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
-	for (int i = 3; i < 20; i++)
-		close(i);
-	if (waitpid(pid, &status, 0) == -1)
+	//close_all_process_files();
+/*	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("waitpid");
 		exit(EXIT_FAILURE);
@@ -92,22 +87,24 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd, pid_t pid, i
 	{
 		printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
 		(*current)->info->exit_status = WSTOPSIG(status);
-	}
+	}*/
 	exec_if_builtin_2(*current);
+	free_files((*current)->files);
 	*current = (*current)->next;
 }
 
 void	executor(t_general *info)
 {
     t_section *current;
+    t_section *tmp_sec;
     int pipefd[2];
     int prev_fd;
-    pid_t pid;
     int status;
 
 	status = 0;
 	prev_fd = -1;
 	current = info->sections;
+	tmp_sec = info->sections;
     while (current != NULL)
 	{
         if (current->next != NULL)
@@ -118,13 +115,13 @@ void	executor(t_general *info)
                 exit(EXIT_FAILURE);
             }
         }
-        pid = fork();
-        if (pid == -1)
+        current->pid = fork();
+        if (current->pid == -1)
 		{
             perror("fork");
             exit(EXIT_FAILURE);
         }
-        if (pid == 0)
+        if (current->pid == 0)
 		{
 			if (current->next == NULL)
 			{
@@ -135,7 +132,27 @@ void	executor(t_general *info)
 		}
 		else
 		{
-			parent_process(&current, &prev_fd, pipefd, pid, status);
+			parent_process(&current, &prev_fd, pipefd);
 		}
+    }
+	while (tmp_sec)
+	{
+		waitpid(tmp_sec->pid, &status, 0);
+		tmp_sec = tmp_sec->next;
+	}
+    if (WIFEXITED(status))
+    {
+        printf("Process exited with status %d\n", WEXITSTATUS(status));
+        info->exit_status = WEXITSTATUS(status);
+    }
+    else if (WIFSIGNALED(status))
+    {
+        printf("Process was killed by signal %d\n", WTERMSIG(status));
+        info->exit_status = WTERMSIG(status);
+    }
+    else if (WIFSTOPPED(status))
+    {
+        printf("Process was stopped by signal %d\n", WSTOPSIG(status));
+        info->exit_status = WSTOPSIG(status);
     }
 }

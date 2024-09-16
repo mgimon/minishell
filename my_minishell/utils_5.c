@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 21:35:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/14 21:25:02 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:54:10 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,5 +170,17 @@ void	close_section_hdocs_parent(t_section *current)
 		close(tmp->fds[0]);
 		close(tmp->fds[1]);
 		tmp = tmp->next;
+	}
+}
+
+void	close_all_process_files(void)
+{
+	int	fd;
+
+	fd = 3;
+	while (fd < 20)
+	{
+		close(fd);
+		fd++;
 	}
 }

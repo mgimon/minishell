@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 16:58:22 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/13 21:40:59 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/16 21:00:29 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,13 @@ void	add_file_to_files(t_token *section_first, t_file *files, int *i, int n)
 		files[*i].open_mode = 9;
 	else
 		files[*i].open_mode = section_first->type;
-	printf("Archivo %s encontrado con open mode %d\n", files[*i].string, files[*i].open_mode);
 	if (*i == (n - 1))
 		files[*i].next = NULL;
 	else
 		files[*i].next = &files[*i + 1];
 	(*i)++;
 }
-// puede que se pierda la referencia de los fd sobreescritos,
-// necesaria para cerrarlos - arreglar
+
 void	open_files_section(t_section *section)
 {
 	t_file		*tmp;
@@ -103,7 +101,6 @@ void	open_files_section(t_section *section)
 			if (section->fd_write != -1)
 				close(section->fd_write);
 			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			printf("Fd write es %d\n", section->fd_write);
 			if (section->fd_write == -1)
 				exit(1);
 		}
@@ -125,7 +122,6 @@ void	open_files_section(t_section *section)
 			}
 			else
 				section->fd_read = open(tmp->string, O_RDONLY);
-			printf("Fd read es %d\n", section->fd_read);
 		}
 		tmp = tmp->next;
 	}	
