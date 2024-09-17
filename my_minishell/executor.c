@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/16 22:13:30 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:39:16 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 		close(pipefd[0]);
 	if (exec_if_builtin_1(current) == 0)
 	{
+		free_files(current->files);
 		free_sections_list(current->info->sections);
 		exit(0);
 	}
@@ -53,6 +54,7 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 	exit(127);
 }
 
+//close_all_process_files();
 void	parent_process(t_section **current, int *prev_fd, int *pipefd)
 {
 	close_section_hdocs_parent(*current);
@@ -67,27 +69,6 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd)
 		close(pipefd[1]);
 		*prev_fd = pipefd[0];
 	}
-	//close_all_process_files();
-/*	if (waitpid(pid, &status, 0) == -1)
-	{
-		perror("waitpid");
-		exit(EXIT_FAILURE);
-	}
-	if (WIFEXITED(status))
-	{
-		printf("Process %d exited with status %d\n", pid, WEXITSTATUS(status));
-		(*current)->info->exit_status = WEXITSTATUS(status);
-	}
-	else if (WIFSIGNALED(status))
-	{
-		printf("Process %d was killed by signal %d\n", pid, WTERMSIG(status));
-		(*current)->info->exit_status = WTERMSIG(status);
-	}
-	else if (WIFSTOPPED(status))
-	{
-		printf("Process %d was stopped by signal %d\n", pid, WSTOPSIG(status));
-		(*current)->info->exit_status = WSTOPSIG(status);
-	}*/
 	exec_if_builtin_2(*current);
 	free_files((*current)->files);
 	*current = (*current)->next;

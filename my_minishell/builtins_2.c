@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 20:44:47 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/17 20:45:19 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,10 @@ void	execute_export(t_section *current)
 	while (current->cmdv[n])
 	{
 		if (current->cmdv[n][0] >= '0' && current->cmdv[n][0] <= '9')
+		{
 			printf("export: %s: not a valid identifier\n", current->cmdv[n]);
+			current->info->exit_status = 1;
+		}
 		else
 		{
 			add_str_to_matrix(&current->info->exports, ft_strjoin("declare -x ", current->cmdv[n]));

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 19:56:25 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/27 19:24:40 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:50:06 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	free_sections_list(t_section *first)
 	while (first)
 	{
 		tmp = first->next;
-		matrix_free(first->paths);
+		if (first->paths)
+			matrix_free(first->paths);
 		free(first->cmdv);
 		if (first->gottofree)
 			free_files(first->files);
@@ -78,4 +79,15 @@ void	free_tokens_list(t_token *first)
         free(current);
         current = next_node;
     }
+	first = NULL;
+}
+
+void	free_info(t_general *info)
+{
+	if (info->env)
+		matrix_free(info->env);
+	if (info->exports)
+		matrix_free(info->exports);
+	if (info->paths)
+		matrix_free(info->paths);
 }

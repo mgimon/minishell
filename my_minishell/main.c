@@ -6,11 +6,11 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/16 20:58:38 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:33:12 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h" // Asegúrate de que este archivo tiene las definiciones para t_general y t_token, más las firmas de funciones mencionadas.
+#include "minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
@@ -29,20 +29,14 @@ void sigint_handler(int signo)
         rl_on_new_line();    // Prepara una nueva línea en la terminal
         rl_replace_line("", 0);  // Limpia la línea en la terminal pero no termina
         rl_redisplay();  // Vuelve a mostrar el prompt al usuario
-    }
-    
-    // Silencia el aviso de parámetro no utilizado
+    } 
     (void)signo;
 }
 
 void sigquit_handler(int signo)
 {
     if (signo == SIGQUIT)
-    {
-        printf("Quit: %d\n", signo);  // Muestra el mensaje pero sin finalizar el proceso
-    }
-    
-    // Silencia el aviso de parámetro no utilizado
+        printf("Quit\n"); 
     (void)signo;
 }
 
@@ -64,7 +58,7 @@ int main(int argc, char **argv, char **env)
 	info.tokens_list = NULL;
 	if (argc != 1)
 		return (0);
-    signal(SIGINT, sigint_handler);   // Para ctrl+C
+	signal(SIGINT, sigint_handler);   // Para ctrl+C
     signal(SIGQUIT, sigquit_handler); // Para ctrl+"\"
 	signal(SIGTERM, sigterm_handler); // Para el builtin exit
 
@@ -78,6 +72,7 @@ int main(int argc, char **argv, char **env)
 		if (!input)
 		{
 			printf("\nExit\n");
+			free_info(&info);
 			break; // Salida en EOF
 		}
 		if (*input)
@@ -100,6 +95,6 @@ int main(int argc, char **argv, char **env)
 		}
         free(input);
     }
-    write_history(history_file); // Conservar el historial de comandos para futuras sesiones
+    write_history(history_file);
     return 0;
 }

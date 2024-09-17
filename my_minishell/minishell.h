@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/16 22:13:26 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/17 21:32:55 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	matrix_free(char **str);
 void	free_sections_list(t_section *first);
 void    free_tokens_list(t_token *first);
 void	free_files(t_file *files);
+void	free_info(t_general *info);
 
 // utils_1.c
 int		thereis_pipe(t_token *first);
