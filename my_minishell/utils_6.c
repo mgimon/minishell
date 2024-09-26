@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 20:25:08 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/26 20:35:30 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/26 20:49:01 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	init_section_objects_helper(t_section *section, t_token *first, int s)
 {
-	section->gottofree = 0;
 	allocate_heredocs(section, first);
 	set_files_section(section, first, s);
 	set_cmdv_section(section, first, s);

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 19:56:25 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/20 22:48:43 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:30:14 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ void	matrix_free(char **str)
 
 void	free_files(t_file *files)
 {
-	t_file	*tmp;
+	t_file	*current;
+	t_file	*next;
 
-	while (files)
+	current = files;
+	while (current != NULL)
 	{
-		tmp = files->next;
-		if (files->string)
-			free(files->string);
-		free(files);
-		files = tmp;
-	}	
+		next = current->next;
+		free(current->string);
+		current = next;
+	}
 }
 
 void	free_sections_list(t_section *first)
@@ -53,11 +53,12 @@ void	free_sections_list(t_section *first)
 	while (first)
 	{
 		tmp = first->next;
+		if (first->files)
+			free_files(first->files);
+		free(first->files);
 		if (first->paths)
 			matrix_free(first->paths);
 		free(first->cmdv);
-		if (first->gottofree)
-			free_files(first->files);
 		free(first->path);
 		first = tmp;
 	}

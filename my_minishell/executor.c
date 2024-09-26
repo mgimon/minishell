@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/20 23:11:39 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/26 22:13:38 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	child_process(t_section *current, int prev_fd, int *pipefd)
 		exit(0);
 	}
 	execve(current->path, current->cmdv, current->info->env);
-	current->gottofree = 1;
 	put_str_fd(2, current->cmdv[0]);
 	put_str_fd(2, ": Command not found\n");
 	exit(127);
@@ -77,7 +76,6 @@ void	parent_process(t_section **current, int *prev_fd, int *pipefd)
 		*prev_fd = pipefd[0];
 	}
 	exec_if_builtin_2(*current);
-	free_files((*current)->files);
 	*current = (*current)->next;
 }
 

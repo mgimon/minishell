@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/26 20:33:14 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/26 22:14:12 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct	s_heredoc
 
 typedef struct	s_section
 {
-	int					gottofree;
 	struct s_general	*info;
 	struct s_section	*next;
 	t_file				*files;
