@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:21:15 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/29 20:55:01 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:57:48 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ void	set_cmd_in_paths(t_section *section)
 	char	*tmp;
 	int		i;
 
-	i = 0;
 	if (!section->paths)
 		return ;
-	if (!section->cmdv || !section->cmdv[0])
-		exit(0);
+	exit_if_no_cmdv(section, &i);
 	while (section->paths[i] != NULL)
 	{
 		tmp = ft_strjoin_pipex(section->paths[i], "/");
@@ -84,9 +82,7 @@ void	set_cmd_in_paths(t_section *section)
 			free(section->paths);
 			return ;
 		}
-		free(section->paths[i]);
-		section->paths[i] = new_path;
-		new_path = NULL;
+		set_cmd_in_paths_helper(section, new_path, i);
 		i++;
 	}
 }

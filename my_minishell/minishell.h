@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/17 21:32:55 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/26 20:33:14 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,12 @@ t_token	*reverse_copy_list(t_token *tokens_list);
 void	tokenize_input(t_general *info, char *input);
 
 // sections.c
+void		set_files_section(t_section *section, t_token *first, int s);
 t_section	*create_sections_list(t_general *info);
+void		set_cmdv_section(t_section *section, t_token *first, int s);
 
 // executor.c
+void    child_process(t_section *current, int prev_fd, int *pipefd);
 void	executor(t_general *info);
 
 // prints.c
@@ -101,7 +104,6 @@ void    print_tokens_list(t_token *tokens_list);
 void    print_matrix(char **matrix);
 void    print_string_to_stderror(char *str);
 void    print_sections_info(t_section *section);
-void    print_matrix_stderror(char **matrix);
 
 // frees.c
 void	matrix_free(char **str);
@@ -144,7 +146,28 @@ void    allocate_heredocs(t_section *section, t_token *first);
 void	write_in_heredocs(t_section *current);
 char    *clean_str_exit(char *str);
 void    close_section_hdocs_parent(t_section *current);
-void	close_all_process_files(void);
+
+// utils_6.c
+void	init_section_objects_helper(t_section *section, t_token *first, int s);
+void	set_cmdv_section_helper(t_section *section, char **cmdv, int i);
+void	open_truncate(t_section *section, t_file *tmp);
+void	open_append(t_section *section, t_file *tmp);
+void	close_prev_fdread(t_section *section);
+
+// utils_7.c
+void	exit_if_no_cmdv(t_section *section, int *i);
+void	set_cmd_in_paths_helper(t_section *section, char *new_path, int i);
+int		count_lines(char **matrix);
+void	allocate_heredocs_helper(t_token *tmp, t_heredoc *tmp_hdocs, t_heredoc *new_hdoc, int count);
+void	clean_str_exit_helper(char *result, char *str);
+
+// utils_8.c
+void	write_in_heredocs_helper(t_heredoc *tmp_hdoc, char *buffer);
+
+// utils_executor.c
+void	handle_child_process(t_section *current, int prev_fd, int pipefd[2]);
+void	create_pipe_if_needed(t_section *current, int pipefd[2]);
+void	wait_for_sections(t_general *info);
 
 // builtins_1.c
 int		execute_echo(t_section *current);

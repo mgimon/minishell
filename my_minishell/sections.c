@@ -6,12 +6,13 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:37:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/13 21:34:10 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/24 20:52:29 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//printf("Section found. Contains %d files\n\n", n);
 void	set_files_section(t_section *section, t_token *first, int s)
 {
 	t_token	*tmp;
@@ -22,7 +23,6 @@ void	set_files_section(t_section *section, t_token *first, int s)
 	i = 0;
 	tmp = get_first_in_section(first, s);
 	n = count_files_per_section(tmp);
-	//printf("Section found. Contains %d files\n\n", n);
 	if (n == 0)
 	{
 		section->files = NULL;
@@ -43,13 +43,11 @@ void	set_cmdv_section(t_section *section, t_token *first, int s)
 {
 	t_token	*tmp;
 	char	**cmdv;
-	int		n;
 	int		i;
 
 	i = 0;
 	tmp = get_first_in_section(first, s);
-	n = count_cmdvs_per_section(tmp);
-	cmdv = malloc(sizeof(char *) * (n + 1));
+	cmdv = malloc(sizeof(char *) * (count_cmdvs_per_section(tmp) + 1));
 	while (tmp && tmp->type != 7)
 	{
 		if (tmp->type == 1)
@@ -67,26 +65,22 @@ void	set_cmdv_section(t_section *section, t_token *first, int s)
 		}
 		tmp = tmp->next;
 	}
-	cmdv[i] = NULL;
-	section->cmdv = cmdv;
+	set_cmdv_section_helper(section, cmdv, i);
 }
 
-void	init_section_objects(t_general *info, t_token *first, t_section *section, int s)
+void	init_section_objects(t_general *info,
+t_token *first, t_section *section, int s)
 {
 	int	i;
 
 	i = 0;
-	section->gottofree = 0;
-	allocate_heredocs(section, first);
-	set_files_section(section, first, s);
-	set_cmdv_section(section, first, s);
+	init_section_objects_helper(section, first, s);
 	section->env = info->env;
 	section->info = info;
 	if (info->paths)
 	{
 		while (info->paths[i])
 			i++;
-	
 		section->paths = malloc(sizeof(char *) * (i + 1));
 		i = 0;
 		while (info->paths[i])
@@ -111,21 +105,20 @@ void	init_section_all_null(t_section *section)
 	section->path = NULL;
 	section->cmdv = NULL;
 	section->heredocs = NULL;
+	section->files = NULL;
 }
 
 t_section	*create_sections_list(t_general *info)
-{   
-    int         i;
-    int         n;
-    t_token     *first;
-    t_section   *sections_list;
+{
+	int			i;
+	int			n;
+	t_section	*sections_list;
 
 	i = 0;
-    first = info->tokens_list;
-    n = count_sections(first);
-    if (!n)
-        return (NULL);
-    sections_list = malloc(sizeof(t_section) * n);
+	n = count_sections(info->tokens_list);
+	if (!n)
+		return (NULL);
+	sections_list = malloc(sizeof(t_section) * n);
 	while (i < n)
 	{
 		if (i == (n - 1))
@@ -138,7 +131,7 @@ t_section	*create_sections_list(t_general *info)
 	i = 0;
 	while (i < n)
 	{
-		init_section_objects(info, first, &sections_list[i], i);
+		init_section_objects(info, info->tokens_list, &sections_list[i], i);
 		i++;
 	}
 	return (sections_list);

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:49:28 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/08/30 23:09:12 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/24 22:18:17 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,57 @@
 
 void	set_exports(t_general *info, char **env)
 {
-    int     i;
+	int	i;
 
-    i = 0;
-    while (env[i])
-        i++;
-    info->exports = (char **)malloc(sizeof(char *) * (i + 1));
-    if (!info->exports)
-        return ;
-    i = 0;
-    while (env[i])
-    {
-        info->exports[i] = ft_strjoin("declare -x ", env[i]);
-        if (!info->exports[i])
-            return ;
-        i++;
-    }
-    info->exports[i] = NULL;
+	i = 0;
+	while (env[i])
+		i++;
+	info->exports = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!info->exports)
+		return ;
+	i = 0;
+	while (env[i])
+	{
+		info->exports[i] = ft_strjoin("declare -x ", env[i]);
+		if (!info->exports[i])
+			return ;
+		i++;
+	}
+	info->exports[i] = NULL;
 }
 
-char    *add_var_equal(char *cmdv1)
+char	*add_var_equal(char *cmdv1)
 {
-    char    *result;
-    int     i;
+	char	*result;
+	int		i;
 
-    i = 0; 
-    result = malloc((sizeof(char) * ft_strlen(cmdv1)) + 2);
-    while (cmdv1[i])
-    {   
-        result[i] = cmdv1[i];
-        i++;
-    }
-    result[i] = '=';
-    i++;
-    result[i] = '\0';
-    return (result);
+	i = 0;
+	result = malloc((sizeof(char) * ft_strlen(cmdv1)) + 2);
+	while (cmdv1[i])
+	{
+		result[i] = cmdv1[i];
+		i++;
+	}
+	result[i] = '=';
+	i++;
+	result[i] = '\0';
+	return (result);
 }
 
-char    **remove_env_line(t_section *current, int line)
+char	**remove_env_line(t_section *current, int line)
 {
-    int     i;
-    int     j;
-    char    **new_env;
+	int		i;
+	int		j;
+	char	**new_env;
 
-    i = 0;
-    j = 0;
-    while (current->info->env[i])
-        i++;
-    new_env = (char **)malloc(i * sizeof(char *));
-    i = 0;
-    while (current->info->env[i])
-    {
-        if (i != line)
-        {   
-            new_env[j] = ft_strdup(current->info->env[i]);
+	i = 0;
+	j = 0;
+	new_env = (char **)malloc(count_lines(current->info->env) * sizeof(char *));
+	while (current->info->env[i])
+	{
+		if (i != line)
+		{
+			new_env[j] = ft_strdup(current->info->env[i]);
 			if (!new_env[j])
 			{
 				while (j > 0)
@@ -75,54 +72,46 @@ char    **remove_env_line(t_section *current, int line)
 				free(new_env);
 				return (current->info->env);
 			}
-            j++;
-        }
-        i++;
-    }
-    new_env[j] = NULL;
-    return (new_env);
+			j++;
+		}
+		i++;
+	}
+	new_env[j] = NULL;
+	return (new_env);
 }
 
 int	is_directory(const char *path)
 {
-    struct stat st;
+	struct stat	st;
 
-    if (stat(path, &st) == 0)
+	if (stat(path, &st) == 0)
 	{
-        if (S_ISDIR(st.st_mode))
-            return (1);
-    }
-    return (0);
+		if (S_ISDIR(st.st_mode))
+			return (1);
+	}
+	return (0);
 }
 
-char *ft_getenv(const char *name, char **env)
+char	*ft_getenv(const char *name, char **env)
 {
-    char 	prefix[256];
-    size_t 	name_len;
-    char 	**current;
-	size_t	i;
+	char	prefix[256];
+	size_t	name_len;
+	char	**current;
 
-	i = 0;
-    if (name == NULL || env == NULL)
-        return (NULL);
-
-    name_len = ft_strlen(name);
-    if (name_len + 1 >= sizeof(prefix))
-        return (NULL);
-    while (i < name_len)
+	if (name == NULL || env == NULL)
+		return (NULL);
+	name_len = ft_strlen(name);
+	if (name_len + 1 >= sizeof(prefix))
+		return (NULL);
+	ft_memcpy(prefix, name, name_len);
+	prefix[name_len] = '=';
+	prefix[name_len + 1] = '\0';
+	current = env;
+	while (*current != NULL)
 	{
-        prefix[i] = name[i];
-		i++;
+		if (ft_strncmp(*current, prefix, name_len + 1) == 0)
+			return (*current + name_len + 1);
+		current++;
 	}
-    prefix[name_len] = '=';
-    prefix[name_len + 1] = '\0';
-
-    current = env;
-    while (*current != NULL)
-	{
-        if (ft_strncmp(*current, prefix, name_len + 1) == 0)
-            return (*current + name_len + 1);
-        current++;
-    }
-    return (NULL);
+	return (NULL);
 }

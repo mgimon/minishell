@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 16:58:22 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/16 21:00:29 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:17:59 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,18 @@ int	count_files_per_section(t_token *first)
 	return (result);
 }
 
-// no bonus, only one command vector per section
-// meaning no & or ; etc
 int	count_cmdvs_per_section(t_token *first)
 {
-    int     result;
-    t_token *tmp;
+	int		result;
+	t_token	*tmp;
 
-    result = 0;
-    tmp = first;
-    while (tmp && tmp->type != 7)
-    {
-        if (tmp->type == 1)
+	result = 0;
+	tmp = first;
+	while (tmp && tmp->type != 7)
+	{
+		if (tmp->type == 1)
 		{
-            result++;
+			result++;
 			tmp = tmp->next;
 			while (tmp && tmp->type == 2)
 			{
@@ -50,24 +48,24 @@ int	count_cmdvs_per_section(t_token *first)
 			}
 		}
 		else
-        	tmp = tmp->next;
-    }
-    return (result);
+			tmp = tmp->next;
+	}
+	return (result);
 }
 
 t_token	*get_first_in_section(t_token *first, int s)
 {
-	t_token *tmp;
-    int     j;
+	t_token	*tmp;
+	int		j;
 
-    tmp = first;
-    j = 0;
-    while (tmp && j < s)
-    {
-        if (tmp->type == 7)
-            j++;
-        tmp = tmp->next;
-    }
+	tmp = first;
+	j = 0;
+	while (tmp && j < s)
+	{
+		if (tmp->type == 7)
+			j++;
+		tmp = tmp->next;
+	}
 	return (tmp);
 }
 
@@ -97,23 +95,12 @@ void	open_files_section(t_section *section)
 	while (tmp)
 	{
 		if (tmp->open_mode == 3)
-		{
-			if (section->fd_write != -1)
-				close(section->fd_write);
-			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			if (section->fd_write == -1)
-				exit(1);
-		}
+			open_truncate(section, tmp);
 		else if (tmp->open_mode == 4)
-		{
-			if (section->fd_write != -1)
-				close(section->fd_write);
-			section->fd_write = open(tmp->string, O_WRONLY | O_CREAT | O_APPEND, 0666);
-		}
+			open_append(section, tmp);
 		else if (tmp->open_mode == 5 || tmp->open_mode == 9)
 		{
-			if (section->fd_read != -1)
-				close(section->fd_read);
+			close_prev_fdread(section);
 			if (tmp->open_mode == 9)
 			{
 				if (tmp_hdocs)
@@ -124,5 +111,5 @@ void	open_files_section(t_section *section)
 				section->fd_read = open(tmp->string, O_RDONLY);
 		}
 		tmp = tmp->next;
-	}	
+	}
 }
