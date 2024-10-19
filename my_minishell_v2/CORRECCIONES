@@ -1,0 +1,11 @@
+TOKENIZADO
+
+- SEGFAULT al hacer export MIVARIABLE="bla bla"
+
+- Terminar wordsplitting
+- Terminar expansiones
+
+- bash: syntax error near unexpected token `|'. NO SALIR en los syntax error, devolver nuevo prompt
+- Los syntax error deben setear el exit status (guardado de momento en la estructura general), en 2
+- minishell>(enter) deja leak y sale de la ejecucion. No debe salir y debe devolver un nuevo prompt.
+- << one two    -debe tokenizar '<<' como un solo token tipo INPUT(5). Tambien hay un posible leak.
