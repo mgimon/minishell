@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/20 21:16:39 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:39:12 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void	execute_cd(t_section *current)
 	var_oldpwd = get_var_oldpwd(current);
 	if ((chdir(current->cmdv[1]) != -1) || (count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
 	{
+		put_str_fd(2, "helloooo\n");
 		update_pwds(current, &var_pwd, &var_oldpwd);
 		new_env = new_wd_environment(current->info->env, var_pwd, var_oldpwd);
 		matrix_free(current->info->env);
