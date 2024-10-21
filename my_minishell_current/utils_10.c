@@ -71,6 +71,7 @@ int	check_new_env(char **newenv, int i)
 //free(var_equal);
 void	set_new_env_2(t_section *current, char **new_env, char *var_equal)
 {
+	(void)var_equal;
 	var_equal = NULL;
 	matrix_free(current->info->env);
 	current->info->env = new_env;

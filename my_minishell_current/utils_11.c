@@ -65,38 +65,101 @@ char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir)
 	return (*prev_dir);
 }
 
+int	has_slash(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	update_pwds(t_section *current, char **var_pwd, char **var_oldpwd)
 {
 	char	*clean_varpwd;
 	char	*clean_varoldpwd;
+	char	*clean_home;
 	char	*tmp;
 
 	// dereference *vars
 	// get clean var_pwd and var_oldpwd;
 	clean_varpwd = ft_strdup((*var_pwd) + 4);
 	clean_varoldpwd = ft_strdup((*var_oldpwd) + 7);
+	(void)clean_varoldpwd;
+	(void)clean_varpwd;
 	// gestionar ../
 	// check if count_lines(current->cmdv) == 1 to update var_pwd to home
 	// check if current->cmdv[1] == '~' to update var_pwd to home
 	if ((count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
 	{
-		put_str_fd(2, "heyyyy\n");
-		if (count_lines(current->cmdv) == 1)
-			chdir(get_home(current->info->env));
+		clean_home = get_home(current->info->env);
+		if ((count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
+			chdir(clean_home);
 		if (*var_oldpwd)
 		{
 			free(*var_oldpwd);
-			*var_oldpwd = ft_strdup(*var_pwd);
+			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
 		}
-		tmp = ft_strjoin("PWD=", get_home(current->info->env));
+		tmp = ft_strjoin("PWD=", clean_home);
+		free(*var_pwd);
+		*var_pwd = ft_strdup(tmp);
+		free(tmp);
+		free(clean_home);
+	}
+	// check if current->cmdv[1] is absolute route (has slash) to update var_pwd to current->cmdv[1]
+	else if (has_slash(current->cmdv[1]))
+	{
+		if (*var_oldpwd)
+		{
+			free(*var_oldpwd);
+			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
+		}
+		tmp = ft_strjoin("PWD=", current->cmdv[1]);
 		free(*var_pwd);
 		*var_pwd = ft_strdup(tmp);
 		free(tmp);
 	}
-	// check if current->cmdv[1] is absolute route (has slash) to update var_pwd to current->cmdv[1]
-	
+/*	else
+	{
 
+	}*/
 	// update tmp_var_pwd to var_oldpwd + slash
 	// update var_pwd to tmp_var_pwd + current_cmdv[1]
+	free(clean_varpwd);
+	free(clean_varoldpwd);
 }
 
+char	*get_var_pwd(t_section *current)
+{
+	int	i;
+
+	i = 0;
+	while (current->info->env[i])
+	{
+		if (ft_strncmp(current->info->env[i], "PWD=", 4) == 0)
+			return (ft_strdup(current->info->env[i]));
+		i++;
+	}
+	return (ft_strdup("PWD="));
+}
+
+char	*get_var_oldpwd(t_section *current)
+{
+	int	i;
+
+	i = 0;
+	while (current->info->env[i])
+	{
+		if (ft_strncmp(current->info->env[i], "OLDPWD=", 7) == 0)
+			return (ft_strdup(current->info->env[i]));
+		i++;
+	}
+	return (ft_strdup("OLDPWD="));
+}

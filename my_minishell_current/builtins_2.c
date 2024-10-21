@@ -138,16 +138,16 @@ void	execute_cd(t_section *current)
 	new_env = NULL;
 	var_pwd = NULL;
 	var_oldpwd = NULL;
-	if (count_lines(current->cmdv) > 1)
+	if (count_lines(current->cmdv) > 2)
 	{
 		put_str_fd(2, "cd: too many arguments\n");
 		return ;
 	}
 	if (current->next)
 		return ;
-	// get var_pwd
-	// get var_oldpwd
-	else if ((chdir(current->cmdv[1]) != -1) || (count_lines(current->cmdv) == 1))
+	var_pwd = get_var_pwd(current);
+	var_oldpwd = get_var_oldpwd(current);
+	if ((chdir(current->cmdv[1]) != -1) || (count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
 	{
 		update_pwds(current, &var_pwd, &var_oldpwd);
 		new_env = new_wd_environment(current->info->env, var_pwd, var_oldpwd);
@@ -162,5 +162,9 @@ void	execute_cd(t_section *current)
 	put_str_fd(2, current->cmdv[1]);
 	put_str_fd(2, "\n");
 	current->info->exit_status = 1;
+	if (var_pwd)
+		free(var_pwd);
+	if (var_oldpwd)
+		free(var_oldpwd);
 	return ;
 }

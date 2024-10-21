@@ -226,6 +226,8 @@ void	add_export_var(t_section *current, char **new_paths, int n);
 //void	update_oldpwd(t_section *current, char **var_oldpwd, int *i);
 void    update_pwds(t_section *current, char **var_pwd, char **var_oldpwd);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
+char    *get_var_pwd(t_section *current);
+char    *get_var_oldpwd(t_section *current);
 
 // utils_executor.c
 void    handle_child_process(t_section *current, int prev_fd, int pipefd[2]);
