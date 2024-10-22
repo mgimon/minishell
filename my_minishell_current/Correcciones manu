@@ -1,0 +1,28 @@
+----- ./minishell sin args, espacio, enter
+minishell> (ctrl+d) = input null 
+minishell> (enter) = input vacio, nuevo prompt
+minishell> (espacios enter) = nuevo prompt
+
+/home/mgimon-c/Cursus/minishell/directorio
+Process exited with status 0
+minitortura> ls
+Token: ls, Type: CMD
+Total tokens: 5
+Process exited with status 0
+minitortura> cd ../libft/
+
+cd vehicles.txt da un fallo de tokenizacion
+
+----- cat | cat | cat debe salir tras 3 vees enter (fds abiertos en los hijos)
+----- exit salta con error exotico(sintaxis) y con return 143. LOS ERRORES DE SINTAXIS no deben salir de minishell, deben generar nuevo prompt
+----- ctrl+c -> nuevo prompt. (error). en cat hace exit de cat sin salir (ok). DEBE DEVOLVER 130 (128 + senal)
+----- ctrl+\ no hace nada en readline ni en heredoc. en cat hace core dumped pero no sale. DEBE DEVOLVER 131 (128 + senal)
+----- echo -n -n -n -n
+
+mini🐚> pwd
+Token: pwd, Type: CMD
+Total tokens: 12
+/home/mgimon-c/Cursus/minishell
+Process exited with status 0
+
+pwd .. cambia el directorio a .. (?)
