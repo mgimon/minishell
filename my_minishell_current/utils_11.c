@@ -93,7 +93,7 @@ void	remove_endslash(char **var)
 
 	i = 0;
 	n = 0;
-	while((*var)[i])
+	while ((*var)[i])
 		i++;
 	i--;
 	if ((*var)[i] != '/')
@@ -182,29 +182,27 @@ void	change_last_subdir(t_section *current, char **var_pwd)
 {
 	int		i;
 	int		n;
-	int		k;
 	char	*result;
 	char	*tmp;
 
-	i = 0;
-	n = 0;
 	if (!current->cmdv || !var_pwd)
 		return ;
+	i = 0;
 	while ((*var_pwd)[i])
 		i++;
-	while ((*var_pwd)[i] != '/')
+	n = i;
+	while ((*var_pwd)[n] != '/' && n > 0)
+		n--;
+	result = malloc(sizeof(char) * (n + 1));
+	if (!result)
+		return ;
+	i = 0;
+	while (i < n)
 	{
-		i--;
-		n++;
+		result[i] = (*var_pwd)[i];
+		i++;
 	}
-	result = malloc(sizeof(char) * ((i - n) + 1));
-	k = 0;
-	while (k < (i - n + 1))
-	{
-		result[k] = (*var_pwd)[k];
-		k++;
-	}
-	k = '\0';
+	result[i] = '\0';
 	tmp = ft_strjoin(result, (current->cmdv[1] + 2));
 	free(result);
 	free(*var_pwd);
@@ -236,27 +234,28 @@ int	has_dots_and_subdir(char *str)
 	return (0);
 }
 
+void	update_oldpwd(char **var_oldpwd, char **var_pwd)
+{
+	if (*var_oldpwd)
+	{
+		free(*var_oldpwd);
+		*var_oldpwd = ft_strjoin("OLD", *var_pwd);
+	}
+}
+
 void	update_pwds(t_section *current, char **var_pwd, char **var_oldpwd)
 {
-	char	*clean_varpwd;
-	char	*clean_varoldpwd;
 	char	*clean_home;
 	char	*tmp;
 
-	clean_varpwd = ft_strdup((*var_pwd) + 4);
-	clean_varoldpwd = ft_strdup((*var_oldpwd) + 7);
-	(void)clean_varoldpwd;
-	(void)clean_varpwd;
-	if ((count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
+	if ((count_lines(current->cmdv) == 1)
+		|| (ft_strcmp(current->cmdv[1], "~") == 0))
 	{
 		clean_home = get_home(current->info->env);
-		if ((count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
+		if ((count_lines(current->cmdv) == 1)
+			|| (ft_strcmp(current->cmdv[1], "~") == 0))
 			chdir(clean_home);
-		if (*var_oldpwd)
-		{
-			free(*var_oldpwd);
-			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
-		}
+		update_oldpwd(var_oldpwd, var_pwd);
 		tmp = ft_strjoin("PWD=", clean_home);
 		free(*var_pwd);
 		*var_pwd = ft_strdup(tmp);
@@ -265,20 +264,12 @@ void	update_pwds(t_section *current, char **var_pwd, char **var_oldpwd)
 	}
 	else if (has_dots_and_subdir(current->cmdv[1]))
 	{
-		if (*var_oldpwd)
-		{
-			free(*var_oldpwd);
-			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
-		}
+		update_oldpwd(var_oldpwd, var_pwd);
 		change_last_subdir(current, var_pwd);
 	}
 	else if (has_slash(current->cmdv[1]))
 	{
-		if (*var_oldpwd)
-		{
-			free(*var_oldpwd);
-			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
-		}
+		update_oldpwd(var_oldpwd, var_pwd);
 		tmp = ft_strjoin("PWD=", current->cmdv[1]);
 		free(*var_pwd);
 		*var_pwd = ft_strdup(tmp);
@@ -286,19 +277,12 @@ void	update_pwds(t_section *current, char **var_pwd, char **var_oldpwd)
 	}
 	else
 	{
-		if (*var_oldpwd)
-		{   
-			free(*var_oldpwd);
-			*var_oldpwd = ft_strjoin("OLD", *var_pwd);
-		}
-		if (*var_pwd)
-			free(*var_pwd);
+		update_oldpwd(var_oldpwd, var_pwd);
+		free(*var_pwd);
 		tmp = ft_strjoin(((*var_oldpwd) + 3), "/");
 		*var_pwd = ft_strjoin(tmp, current->cmdv[1]);
 		free(tmp);
 	}
-	free(clean_varpwd);
-	free(clean_varoldpwd);
 	remove_endslash(var_pwd);
 	remove_endslash(var_oldpwd);
 	remove_dots(var_pwd);
