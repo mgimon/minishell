@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 20:35:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/25 21:29:14 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/25 22:12:31 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,45 +353,66 @@ char	*get_var_oldpwd(t_section *current)
 	return (ft_strdup("OLDPWD="));
 }
 
-
-// RED 13 + 1var
-void	remove_var_from_exports(t_section *current, char *var_equal)
+int count_exports(char **exports)
 {
-	char	**new_exports;
-	char	*linedeclare;
-	int		i;
-	int		j;
-	int		k;
-	int		n;
+    int count;
+
+    count = 0;
+    while (exports[count])
+        count++;
+    return (count);
+}
+
+char **copy_exports(char **exports, int omit_index, int total)
+{
+    char **new_exports;
+    int j;
+    int k;
 
 	i = 0;
-	j = 0;
 	k = 0;
-	n = 0;
-	linedeclare = NULL;
-	if (!current || !current->cmdv || !current->info->exports)
-		return ;
-	if (!current->cmdv[1])
-		return ;
-	while (current->info->exports[i])
-	{
-		linedeclare = ft_strjoin("declare -x ", var_equal);
-		if (ft_strncmp_pipex(linedeclare, current->info->exports[i], ft_strlen(linedeclare)) == 0)
-			n = i;
-		i++;
-		if (linedeclare)
-			free(linedeclare);
-	}
-	if (!n)
-		return ;
-	new_exports = malloc(sizeof(char *) * i);
-	while (j < i)
-	{
-		if (j != n)
-			new_exports[k++] = ft_strdup(current->info->exports[j]);
-		j++;
-	}
-	new_exports[k] = NULL;
-	matrix_free(current->info->exports);
-	current->info->exports = new_exports;
+    new_exports = malloc(sizeof(char *) * (total));
+    if (!new_exports)
+        return (NULL);
+    while (j < total)
+    {
+        if (j != omit_index)
+        {
+            new_exports[k] = ft_strdup(exports[j]);
+            k++;
+        }
+        j++;
+    }
+    new_exports[k] = NULL;
+    return (new_exports);
+}
+
+void remove_var_from_exports(t_section *current, char *var_equal)
+{
+    int i;
+    int n;
+	int	total_exports;
+    char *linedeclare;
+	char **new_exports;
+
+    i = 0;
+    n = -1;
+    if (!current || !current->cmdv || !current->info->exports || !current->cmdv[1])
+        return ;
+    while (current->info->exports[i])
+    {
+        linedeclare = ft_strjoin("declare -x ", var_equal);
+        if (ft_strncmp_pipex(linedeclare, current->info->exports[i], ft_strlen(linedeclare)) == 0)
+        {
+            n = i;
+        }
+        free(linedeclare);
+        i++;
+    }
+    if (n == -1)
+        return ;
+    total_exports = count_exports(current->info->exports);
+    new_exports = copy_exports(current->info->exports, n, total_exports);
+    matrix_free(current->info->exports);
+    current->info->exports = new_exports;
 }
