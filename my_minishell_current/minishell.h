@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/22 19:24:51 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:24:33 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ typedef struct s_quote_state {
     int sq;
 } t_quote_state;
 
-typedef enum e_quote_state
+/*typedef enum e_quote_state
 {
     NONE,
     SINGLE_QUOTE,
     DOUBLE_QUOTE
-} t_QuoteState;
+} t_QuoteState;*/
 
 typedef struct	s_token
 {
@@ -102,7 +102,7 @@ typedef	struct	s_general
 	struct s_section	*sections;
 }	t_general;
 
-typedef struct s_extract
+/*typedef struct s_extract
 {
     char            *current_token;
     int             i;
@@ -124,7 +124,7 @@ typedef struct s_params
     char    *temp;
     int     temp_index;
     int     expanded;
-}   t_params;
+}   t_params;*/
 
 // tokens.c
 t_token *tokenize_input(t_general *info, char *input);
@@ -228,6 +228,7 @@ void    update_pwds(t_section *current, char **var_pwd, char **var_oldpwd);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
 char    *get_var_pwd(t_section *current);
 char    *get_var_oldpwd(t_section *current);
+void	remove_var_from_exports(t_section *current, char *var_equal);
 
 // utils_executor.c
 void    handle_child_process(t_section *current, int prev_fd, int pipefd[2]);
@@ -246,8 +247,8 @@ void	execute_export(t_section *current);
 void    execute_cd(t_section *current);
 void	execute_exit(t_section *current);
 
-// mele
-const char	*get_token_type_name(int type);
+// mele 
+/*const char	*get_token_type_name(int type);
 int         check_syntax_errors(t_general *info);
 void        free_tokens_list_tokenize(t_general *info);
 int         open_quote(char *line, t_quote_state *state);
@@ -322,6 +323,15 @@ void        handle_special_commands(const char *input, int *print_mode);
 void        initialize_environment(t_general *info, char **env,
                 const char *history_file);
 void        initialize_program_settings(int argc, char **argv,
-                const char **history_file, int *print_mode);
+                const char **history_file, int *print_mode);*/
+const char *get_token_type_name(int type);
+int check_syntax_errors(t_general *info);
+void free_tokens_list_tokenize(t_general *info);
+int open_quote(char *line, t_quote_state *state);
+char *extract_current_section(const char *section, t_general *info);
+char	mark_char(char c);
+char	unmark_char(char c);
+int	is_marked(char c);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/22 19:24:49 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/25 19:48:54 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	execute_unset(t_section *current)
 		return ;
 	var_equal = add_var_equal(current->cmdv[1]);
 	length = ft_strlen(var_equal);
+	remove_var_from_exports(current, var_equal);
 	while (current->info->env[i])
 	{
 		if (ft_strncmp_pipex(current->info->env[i], var_equal, length) == 0)
