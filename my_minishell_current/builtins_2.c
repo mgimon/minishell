@@ -148,9 +148,9 @@ void	execute_cd(t_section *current)
 		return ;
 	var_pwd = get_var_pwd(current);
 	var_oldpwd = get_var_oldpwd(current);
-	if ((chdir(current->cmdv[1]) != -1) || (count_lines(current->cmdv) == 1) || (ft_strcmp(current->cmdv[1], "~") == 0))
+	if ((chdir(current->cmdv[1]) != -1) || (count_lines(current->cmdv) == 1)
+		|| (ft_strcmp(current->cmdv[1], "~") == 0))
 	{
-		put_str_fd(2, "helloooo\n");
 		update_pwds(current, &var_pwd, &var_oldpwd);
 		new_env = new_wd_environment(current->info->env, var_pwd, var_oldpwd);
 		matrix_free(current->info->env);

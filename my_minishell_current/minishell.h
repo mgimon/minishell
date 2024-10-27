@@ -222,13 +222,36 @@ void	set_new_env_2(t_section *current, char **new_env, char *var_equal);
 
 // utils_11.c
 void	add_export_var(t_section *current, char **new_paths, int n);
-//void	change_pwd(t_section *current, char **content, char **var_pwd);
-//void	update_oldpwd(t_section *current, char **var_oldpwd, int *i);
-void    update_pwds(t_section *current, char **var_pwd, char **var_oldpwd);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
+int     has_slash(char *str);
+
+// utils_12.c
+void    remove_endslash(char **var);
+int     remove_dots_helper(char *var_pwd, int *i, char c);
+int     remove_dots(char **var_pwd);
+void    remove_lastdir_helper(char *new_varpwd, char **var_pwd, int *i, int *n);
+void	remove_var_from_exports(t_section *current, char *var_equal);
+
+// utils_13.c
+void    remove_lastdir(t_section *current, char **var_pwd);
+void    change_last_subdir_helper(char **var_pwd, char *result, int *i, int *n);
+void    change_last_subdir(t_section *current, char **var_pwd);
+int     has_dots_and_subdir(char *str);
+void    update_oldpwd(char **var_oldpwd, char **var_pwd);
+
+// utils_14.c
+void    upwds_one(t_section *current, char *tmp, char **var_pwd, char **var_oldpwd);
+void    upwds_two(char **var_pwd, char **var_oldpwd);
+void    upwds_three(t_section *current, char **var_pwd, char **var_oldpwd);
+void    upwds_four(t_section *current, char *tmp, char **var_pwd, char **var_oldpwd);
+void    upwds_five(t_section *current, char *tmp, char **var_pwd, char **var_oldpwd);
+
+// utils_15.c
+void    update_pwds(t_section *current, char **var_pwd, char **var_oldpwd);
 char    *get_var_pwd(t_section *current);
 char    *get_var_oldpwd(t_section *current);
-void	remove_var_from_exports(t_section *current, char *var_equal);
+int	count_exports(char **exports);
+char	**copy_exports(char **exports, int omit_index, int total);
 
 // utils_executor.c
 void    handle_child_process(t_section *current, int prev_fd, int pipefd[2]);
