@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/25 19:48:54 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:25:37 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	execute_unset(t_section *current)
 		free(var_equal);
 }
 
-void	if_remove_var_from_env(char ***env, char *var)
+/*void	if_remove_var_from_env(char ***env, char *var)
 {
 	char	**new_env;
 	char	*var_name;
@@ -52,7 +52,7 @@ void	if_remove_var_from_env(char ***env, char *var)
 	size_t	j;
 
 	var_name = NULL;
-	if (!check_all_env(env, var, var_name, &env_len))
+	if (!check_all_env(env, var, &var_name, &env_len))
 		return ;
 	new_env = (char **)malloc(sizeof(char *) * env_len);
 	i = 0;
@@ -67,6 +67,29 @@ void	if_remove_var_from_env(char ***env, char *var)
 	}
 	new_env[j++] = ft_strdup(var);
 	set_new_env(new_env, j, var_name, env);
+}*/
+
+void  if_remove_var_from_env(char ***env, char *var)
+{   
+    char    **new_env;
+    char    *var_name;
+    size_t  env_len;
+    size_t  i;
+    size_t  j;
+
+    var_name = NULL;
+    if (!check_all_env(env, var, &var_name, &env_len))
+        return ;
+    new_env = (char **)malloc(sizeof(char *) * (env_len - 1));
+    i = 0;
+    j = 0;
+    while (i < env_len)
+    {
+        if (!compare_var_name((*env)[i], var_name))
+            new_env[j++] = (*env)[i];
+        i++;
+    }
+    set_new_env(new_env, j, var_name, env);
 }
 
 // exports to env in t_general
@@ -94,9 +117,11 @@ void	execute_export(t_section *current)
 			current->info->exit_status = 1;
 		}
 		else
-			add_export_var(current, new_paths, n);
+			add_export_var(current, &new_paths, n);
 		n++;
 	}
+	if (new_paths != NULL)
+		matrix_free(new_paths);
 }
 
 char	**new_wd_environment(char **oldenv,

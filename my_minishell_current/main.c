@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/20 17:49:01 by albealva         ###   ########.fr       */
+/*   Updated: 2024/10/29 15:30:48 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ int main(int argc, char **argv, char **env) {
 
     (void)argc;
     (void)argv;
-
     init_general(&info, env);
     setup_signals();
     init_history(history_file);

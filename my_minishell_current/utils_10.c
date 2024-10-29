@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 20:19:11 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/17 21:24:41 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:38:54 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ int	search_var_env(char ***env, char *var_name, size_t env_len)
 	return (0);
 }
 
-int	check_all_env(char ***env, char *var, char *var_name, size_t *env_len)
+int	check_all_env(char ***env, char *var, char **var_name, size_t *env_len)
 {
 	if (!env || !*env || !var)
 		return (0);
-	var_name = get_var_name(var);
-	if (!var_name)
+	*var_name = get_var_name(var);
+	if (!*var_name)
 		return (0);
 	*env_len = 0;
 	while ((*env)[(*env_len)])
 		(*env_len)++;
-	if (!search_var_env(env, var_name, *env_len))
+	if (!search_var_env(env, *var_name, *env_len))
 		return (0);
 	return (1);
 }

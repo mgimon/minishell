@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 18:10:59 by albealva          #+#    #+#             */
-/*   Updated: 2024/10/20 17:55:16 by albealva         ###   ########.fr       */
+/*   Updated: 2024/10/27 20:44:02 by albealva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1213,6 +1213,21 @@ if (count_dollars(section))
 printf("Tokens concatenados: %s\n", current_section);    
 }
 */
+static void trim_trailing_whitespace(char *str)
+{
+    int len = strlen(str);
+
+    // Encuentra la posición final sin espacios ni tabulaciones
+    while (len > 0 && (str[len - 1] == ' ' || str[len - 1] == '\t')) {
+        len--;
+    }
+
+    // Coloca '\0' desde la nueva longitud hasta el final original
+    while (str[len] != '\0') {
+        str[len] = '\0';
+        len++;
+    }
+}
 
 char *extract_current_section(const char *section, t_general *info) {
     char *current_token = NULL;  // Única variable para construcción de tokens
@@ -1366,24 +1381,9 @@ char *extract_current_section(const char *section, t_general *info) {
             quote_state = NONE;
         }
         // Manejo de < como token individual
-        else if (section[i] == '<' && !in_single_quotes && !in_double_quotes) {
+        else if (section[i] == '<' && section[i + 1] == '<' && !in_single_quotes && !in_double_quotes) {
             if (current_token) {
-        if (quote_state != SINGLE_QUOTE && count_dollars(section)) {
-                while (z < size_malloc && start_pos[z] != -1) {
-                    length_difference = calculate_length_difference(current_token, start_pos[z],info);
-                    current_token = expand_variable2(current_token, start_pos[z],info);
-                    while (h < size_malloc && start_pos[h] != -1) {
-                        if(start_pos[h] + length_difference >= 0) {
-                            start_pos[h] += length_difference;
-                        }
-                        
-                        h++;
-                    }
-                    z++;
-                    h = 0;
-        }
-        z = 0;
-    }
+        
                 //add_token_to_list(info, current_token, is_first_token ? CMD : ARG);
                 current_section = append_to_current_section(current_section, current_token);
                 free(current_token);
@@ -1392,7 +1392,28 @@ char *extract_current_section(const char *section, t_general *info) {
                 j = 0;
                 quote_state = NONE;
             }
-            //add_token_to_list(info, "<", INPUT);
+            
+            current_section = append_to_current_section(current_section, "<<");
+            free(current_token);
+            i++;
+            //expect_file = 1;
+            //is_first_token = 0;
+            j=reset_positions(start_pos, size_malloc);
+            j = 0;
+            quote_state = NONE;
+        }
+        // Manejo de > como token individual
+        else if (section[i] == '<' && section[i + 1] != '<' && !in_single_quotes && !in_double_quotes) {
+            if (current_token) {
+                //add_to_list(info, current_token, is_first_token ? CMD : ARG);
+                current_section = append_to_current_section(current_section, current_token);
+                free(current_token);
+                current_token = NULL;
+                j=reset_positions(start_pos, size_malloc);
+                j = 0;
+                quote_state = NONE;
+            }
+            //add_token_to_list(info, ">", TRUNC);
             current_section = append_to_current_section(current_section, "<");
             free(current_token);
             //expect_file = 1;
@@ -1401,6 +1422,7 @@ char *extract_current_section(const char *section, t_general *info) {
             j = 0;
             quote_state = NONE;
         }
+    
         // Manejo de | solo si no estamos dentro de comillas
         else if (section[i] == '|' && !in_single_quotes && !in_double_quotes) {
             //is_first_token = 1;
@@ -1529,10 +1551,11 @@ if (current_token) {
 if (count_dollars(section))
     free(start_pos);
 
-
+trim_trailing_whitespace(current_section);
 return current_section;    
 }
 //printf("Tokens concatenados2: %s\n", current_section);
+
 
 
 void extract_tokens(const char *section, t_general *info) {
@@ -1673,6 +1696,25 @@ void extract_tokens(const char *section, t_general *info) {
             }
             add_token_to_list(info, ">", TRUNC);
             free(current_token);
+            expect_file = 1;
+            is_first_token = 0;
+            j=reset_positions(start_pos, size_malloc);
+            j = 0;
+            //quote_state = NONE;
+        }
+        else if (section[i] == '<' && section[i + 1] == '<' && !in_single_quotes && !in_double_quotes) {
+            if (current_token) {
+        
+                add_token_to_list(info, current_token, is_first_token ? CMD : ARG);
+                free(current_token);
+                current_token = NULL;
+                j=reset_positions(start_pos, size_malloc);
+                j = 0;
+                //quote_state = NONE;
+            }
+            add_token_to_list(info, "<<", INPUT);
+            free(current_token);
+            i++;
             expect_file = 1;
             is_first_token = 0;
             j=reset_positions(start_pos, size_malloc);

@@ -1,6 +1,6 @@
 NAME        = minishell
 HEADER      = minishell.h
-FLAGS       = -Wall -Werror -Wextra -fsanitize=address -fsanitize=leak
+FLAGS       = -Wall -Werror -Wextra #-fsanitize=address -fsanitize=leak
 LIB_DIR     = ./libft/
 LIB_NAME    = libft.a
 LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))

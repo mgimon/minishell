@@ -6,13 +6,13 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 20:35:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/25 22:12:31 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:28:33 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_export_var(t_section *current, char **new_paths, int n)
+void	add_export_var(t_section *current, char ***new_paths, int n)
 {
 	add_str_to_matrix(&current->info->exports,
 		ft_strjoin("declare -x ", current->cmdv[n]));
@@ -22,15 +22,15 @@ void	add_export_var(t_section *current, char **new_paths, int n)
 		add_str_to_matrix(&current->info->env, ft_strdup(current->cmdv[n]));
 		if (ft_strncmp_pipex(current->cmdv[n], "PATH=", 5) == 0)
 		{
-			if (new_paths != NULL)
-				matrix_free(new_paths);
-			new_paths = ft_split(current->cmdv[n], ':');
+			if (*new_paths != NULL)
+				matrix_free(*new_paths);
+			*new_paths = ft_split(current->cmdv[n], ':');
 		}
-		if (new_paths != NULL)
+		if (*new_paths != NULL)
 		{
 			if (current->info->paths != NULL)
 				matrix_free(current->info->paths);
-			current->info->paths = new_paths;
+			current->info->paths = *new_paths;
 		}
 	}
 }

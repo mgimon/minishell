@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 20:35:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/27 22:12:31 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:15:27 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char	**copy_exports(char **exports, int omit_index, int total)
 	int		k;
 
 	k = 0;
+	j = 0;
 	new_exports = malloc(sizeof(char *) * (total));
 	if (!new_exports)
 		return (NULL);

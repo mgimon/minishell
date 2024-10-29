@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/25 19:24:33 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:39:10 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	set_exports(t_general *info, char **env);
 // utils_5.c
 void	add_str_to_matrix(char ***matrix, char *str);
 void    allocate_heredocs(t_section *section, t_token *first);
-void	write_in_heredocs(t_section *current);
+void	write_in_heredocs(t_section *current, t_general *info);
 char    *clean_str_exit(char *str);
 void    close_section_hdocs_parent(t_section *current);
 
@@ -203,7 +203,7 @@ void    allocate_heredocs_helper(t_token *tmp, t_heredoc *tmp_hdocs, t_heredoc *
 void    clean_str_exit_helper(char *result, char *str);
 
 // utils_8.c
-void    write_in_heredocs_helper(t_heredoc *tmp_hdoc, char *buffer);
+void    write_in_heredocs_helper(t_heredoc *tmp_hdoc, char *buffer, t_general *info);
 int		ft_atol_overflow(const char *str, long *result);
 void	check_argc_exit(t_section *current);
 
@@ -215,13 +215,13 @@ char	*get_home(char **env);
 
 // utils_10.c
 int		search_var_env(char ***env, char *var_name, size_t env_len);
-int		check_all_env(char ***env, char *var, char *var_name, size_t *env_len);
+int		check_all_env(char ***env, char *var, char **var_name, size_t *env_len);
 void	set_new_env(char **new_env, size_t j, char *var_name, char ***env);
 int		check_new_env(char **newenv, int i);
 void	set_new_env_2(t_section *current, char **new_env, char *var_equal);
 
 // utils_11.c
-void	add_export_var(t_section *current, char **new_paths, int n);
+void	add_export_var(t_section *current, char ***new_paths, int n);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
 int     has_slash(char *str);
 
@@ -270,91 +270,17 @@ void	execute_export(t_section *current);
 void    execute_cd(t_section *current);
 void	execute_exit(t_section *current);
 
-// mele 
-/*const char	*get_token_type_name(int type);
-int         check_syntax_errors(t_general *info);
-void        free_tokens_list_tokenize(t_general *info);
-int         open_quote(char *line, t_quote_state *state);
-void        process_current_token(t_extract *ex, t_general *info);
-void        handle_input_token(t_extract *ex, t_general *info);
-void        handle_quotes(t_extract *ex, const char *section);
-void        cleanup_extract(t_extract *ex);
-void        aux(t_extract *ex, t_general *info);
-void        process_section_2(t_extract *ex, t_general *info,
-                const char *section);
-void        initialize_extract(t_extract *ex);
-void        add_token_and_cleanup(t_extract *ex, t_general *info,
-                const char *token, int type);
-void        handle_pipe_token(t_extract *ex, t_general *info,
-                const char *section);
-void        handle_space_token(t_extract *ex, t_general *info,
-                const char *section);
-void        handle_current_token_update(t_extract *ex, const char *section);
-void        finalize_token(t_extract *ex, t_general *info);
-void        handle_variable_expansion(t_extract *ex, t_general *info,
-                const char *section);
-void        process_current_token(t_extract *ex, t_general *info);
-void        handle_input_redirect(t_extract *ex, t_general *info,
-                const char *section);
-void        handle_input_token(t_extract *ex, t_general *info);
-void        reset_ex_values(t_extract *ex);
-void        handle_trunc_redirect(t_extract *ex, t_general *info);
-void        handle_append_redirect(t_extract *ex, t_general *info);
-void        handle_single_quotes(t_extract *ex, const char *section);
-void        handle_double_quotes(t_extract *ex, const char *section);
-int         *allocate_and_initialize_positions(const char *section,
-                int *size_malloc);
-int         calculate_length_difference(const char *input,
-                int start_pos, t_general *info);
-void        expand_vars_for_length(const char *input, int start_pos,
-                t_params *p, t_general *info);
-int         handle_expansion_len(const char *input, int *i, t_params *p,
-                t_general *info);
-int         handle_dollar_question(t_params *p, int *i, t_general *info);
-void        copy_initial_chars(const char *input, int start_pos, t_params *p);
-char        *expand_variable(const char *input, int start_pos, t_general *info);
-void        expand_variables_in_input(const char *input, int start_pos,
-                t_params *p, t_general *info);
-void        copy_until_start_pos(const char *input, int start_pos, t_params *p);
-char        *handle_dollar_expansion(const char *input, int *i, t_params *p,
-                t_general *info);
-void        extract_var_name(const char *input, int *i, char *var_name,
-                int *var_index);
-char        *initialize_var_name(void);
-int         reset_positions(int *start_pos, int size_malloc);
-int         count_dollars(const char *section);
-char        *expand_dollar_question(t_general *info);
-void        init_extract_section(int *in_single_quotes, int *in_double_quotes);
-char        *extract_section(char **start, const char *delimiters);
-void        error_malloc(void);
-void        error_strdup(void);
-int         is_special_separator(char c);
-char        *get_env_var(t_general *info, const char *var_name);
-char        *add_char_to_token(char *token, char c);
-void        add_token_to_list(t_general *info, const char *str, int type);
-int         ft_isspace(char c);
-int         init_general(t_general *info, char **env);
-void        sigint_handler(int signo);
-void        setup_signals(void);
-void        init_history(const char *history_file);
-void        cleanup(const char *history_file);
-void        process_input(t_general *info, char *input, int *print_mode);
-void        print_tokens_list_alb(t_general *info);
-void        print_token_info(int i, t_token *current);
-void        handle_input(t_general *info, char *input, int *print_mode);
-void        handle_special_commands(const char *input, int *print_mode);
-void        initialize_environment(t_general *info, char **env,
-                const char *history_file);
-void        initialize_program_settings(int argc, char **argv,
-                const char **history_file, int *print_mode);*/
 const char *get_token_type_name(int type);
 int check_syntax_errors(t_general *info);
 void free_tokens_list_tokenize(t_general *info);
 int open_quote(char *line, t_quote_state *state);
 char *extract_current_section(const char *section, t_general *info);
-char	mark_char(char c);
-char	unmark_char(char c);
-int	is_marked(char c);
-
+char    mark_char(char c);
+char    unmark_char(char c);
+int is_marked(char c);
+char *expand_variable(const char *input, int start_pos, t_general *info);
+char* expand_dollar_question(t_general *info);
+int is_special_separator(char c);
+char *get_env_var(t_general *info, const char *var_name);
 
 #endif

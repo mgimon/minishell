@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 18:26:37 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/26 22:13:38 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:33:58 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	handle_output_redirection(t_section *current, int *pipefd)
 
 void	child_process(t_section *current, int prev_fd, int *pipefd)
 {
-	write_in_heredocs(current);
+	write_in_heredocs(current, current->info);
 	handle_input_redirection(current, prev_fd);
 	handle_output_redirection(current, pipefd);
 	if (exec_if_builtin_1(current) == 0)

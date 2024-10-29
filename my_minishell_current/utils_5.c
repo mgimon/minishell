@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 21:35:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/09/26 20:34:47 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:42:43 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*clean_str_exit(char *str)
 	return (result);
 }
 
-void	write_in_heredocs(t_section *current)
+void	write_in_heredocs(t_section *current, t_general *info)
 {
 	char		buffer[1024];
 	t_heredoc	*tmp_hdoc;
@@ -102,7 +102,7 @@ void	write_in_heredocs(t_section *current)
 		return ;
 	while (tmp_hdoc)
 	{
-		write_in_heredocs_helper(tmp_hdoc, buffer);
+		write_in_heredocs_helper(tmp_hdoc, buffer, info);
 		close(tmp_hdoc->fds[1]);
 		if (buffer[0] == '\0')
 			break ;
