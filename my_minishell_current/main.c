@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 16:26:16 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 15:30:48 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:18:52 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,31 +155,29 @@ int main(int argc, char **argv, char **env) {
     setup_signals();
     init_history(history_file);
     set_paths_and_env(&info, env);
-    while (1) {
+    while (1)
+	{
         input = readline("mini🐚> ");
-        if (!input) {
-            printf("\nExit\n");
-            break;
-        }
-
-        // Verificar comillas no cerradas antes de manejar la entrada
-        if (open_quote(input, &state) != 0) {
-            //printf("Error: Comillas no cerradas\n");
-            //free(input);
-            continue; // Esperar la siguiente entrada
-        }
-
-        handle_input(&info, input, &print_mode);
-        //print_tokens_list_alb(&info);
-        info.sections = create_sections_list(&info);
+        if (input && has_content(input))
+		{
+        	// Verificar comillas no cerradas antes de manejar la entrada
+        	if (open_quote(input, &state) != 0)
+			{
+            	//printf("Error: Comillas no cerradas\n");
+            	//free(input);
+            	continue; // Esperar la siguiente entrada
+        	}
+        	handle_input(&info, input, &print_mode);
+        	//print_tokens_list_alb(&info);
+        	info.sections = create_sections_list(&info);
 			//print_sections_info(info.sections);
 			executor(&info);
-    
-        //free_sections_list(info.sections); 
-        //free_tokens_list_tokenize(&info);
-        free(input); // Liberar la memoria de la entrada
-        free_sections_list(info.sections);            
-        free_tokens_list(info.tokens_list);
+        	//free_sections_list(info.sections); 
+        	//free_tokens_list_tokenize(&info);
+        	free(input); // Liberar la memoria de la entrada
+        	free_sections_list(info.sections);            
+        	free_tokens_list(info.tokens_list);
+		}
     }
 
     // Descomentar si deseas guardar el historial

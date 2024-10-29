@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/28 20:39:10 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:16:28 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,7 @@ void	set_new_env_2(t_section *current, char **new_env, char *var_equal);
 void	add_export_var(t_section *current, char ***new_paths, int n);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
 int     has_slash(char *str);
+int		has_content(char *str);
 
 // utils_12.c
 void    remove_endslash(char **var);

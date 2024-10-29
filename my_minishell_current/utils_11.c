@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 20:35:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/28 20:28:33 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:16:34 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,22 @@ int	has_slash(char *str)
 		if (str[i] == '/')
 			return (1);
 		i--;
+	}
+	return (0);
+}
+
+int	has_content(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != '\t' && str[i] != '\0' && str[i] != ' ')
+			return (1);
+		i++;
 	}
 	return (0);
 }
