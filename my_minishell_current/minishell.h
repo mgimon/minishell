@@ -6,7 +6,7 @@
 /*   By: albealva <albealva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 13:34:43 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 17:16:28 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:33:53 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ char	*get_var_name(const char *var);
 int		compare_var_name(const char *env_var, const char *var_name);
 char	*get_prev_dir(char **env);
 char	*get_home(char **env);
+int		n_valid_succession(char **cmdv, int *i);
 
 // utils_10.c
 int		search_var_env(char ***env, char *var_name, size_t env_len);
@@ -225,6 +226,7 @@ void	add_export_var(t_section *current, char ***new_paths, int n);
 char	*get_pdir_helper(size_t len, char **pwd, char **prev_dir);
 int     has_slash(char *str);
 int		has_content(char *str);
+int		n_all(char **cmdv);
 
 // utils_12.c
 void    remove_endslash(char **var);
@@ -253,6 +255,10 @@ char    *get_var_pwd(t_section *current);
 char    *get_var_oldpwd(t_section *current);
 int	count_exports(char **exports);
 char	**copy_exports(char **exports, int omit_index, int total);
+
+// utils_16
+void	reset_newline_flag(char **cmdv, int *no_newline);
+void	clean_repeateds(char ***env);
 
 // utils_executor.c
 void    handle_child_process(t_section *current, int prev_fd, int pipefd[2]);

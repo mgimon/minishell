@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 15:25:37 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:43:56 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,27 @@ void	execute_unset(t_section *current)
 	set_new_env(new_env, j, var_name, env);
 }*/
 
-void  if_remove_var_from_env(char ***env, char *var)
-{   
-    char    **new_env;
-    char    *var_name;
-    size_t  env_len;
-    size_t  i;
-    size_t  j;
+void	if_remove_var_from_env(char ***env, char *var)
+{
+	char	**new_env;
+	char	*var_name;
+	size_t	env_len;
+	size_t	i;
+	size_t	j;
 
-    var_name = NULL;
-    if (!check_all_env(env, var, &var_name, &env_len))
-        return ;
-    new_env = (char **)malloc(sizeof(char *) * (env_len - 1));
-    i = 0;
-    j = 0;
-    while (i < env_len)
-    {
-        if (!compare_var_name((*env)[i], var_name))
-            new_env[j++] = (*env)[i];
-        i++;
-    }
-    set_new_env(new_env, j, var_name, env);
+	var_name = NULL;
+	if (!check_all_env(env, var, &var_name, &env_len))
+		return ;
+	new_env = (char **)malloc(sizeof(char *) * (env_len - 1));
+	i = 0;
+	j = 0;
+	while (i < env_len)
+	{
+		if (!compare_var_name((*env)[i], var_name))
+			new_env[j++] = (*env)[i];
+		i++;
+	}
+	set_new_env(new_env, j, var_name, env);
 }
 
 // exports to env in t_general
@@ -106,6 +106,7 @@ void	execute_export(t_section *current)
 		return ;
 	if (!current->cmdv[1])
 	{
+		clean_repeateds(&(current->info->exports));
 		print_matrix(current->info->exports);
 		return ;
 	}

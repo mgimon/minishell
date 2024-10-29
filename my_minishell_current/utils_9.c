@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 21:24:00 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 15:26:34 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:19:51 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,25 @@ char	*get_home(char **env)
 		i++;
 	}
 	return (NULL);
+}
+
+int	n_valid_succession(char **cmdv, int *i)
+{
+	int	k;
+
+	k = 1;
+	if (!cmdv)
+		return (0);
+	if (!cmdv[0])
+		return (0);
+	while (cmdv[k])
+	{
+		if ((ft_strcmp(cmdv[k], "-n") != 0) && (has_content(cmdv[k])))
+		{
+			*i = k;
+			return (1);
+		}
+		k++;
+	}
+	return (0);
 }

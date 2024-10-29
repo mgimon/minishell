@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 16:05:39 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/14 20:51:37 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:54:42 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int	execute_echo(t_section *current)
 	if (ft_strcmp(current->cmdv[1], "-n") == 0
 		&& (!current->cmdv[2] || current->cmdv[2][0] == '\0'))
 		return (0);
-	if (ft_strcmp(current->cmdv[1], "-n") == 0)
-	{
+	if (n_all(current->cmdv))
+		return (0);
+	if (n_valid_succession(current->cmdv, &i))
 		no_newline = 0;
-		i = 2;
-	}
 	else
 		i = 1;
+	reset_newline_flag(current->cmdv, &no_newline);
 	write_echo(current->cmdv, i);
 	if (no_newline)
 		write(STDOUT_FILENO, "\n", 1);

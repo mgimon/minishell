@@ -6,19 +6,20 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 20:26:33 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/28 19:42:53 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:45:10 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *expand_var(const char *input, t_general *info) {
-    char *result = NULL;
-    int len = strlen(input);
-    char temp[1024] = {0};  // Buffer temporal para construir el resultado expandido
-    char var_name[256] = {0};
-    int temp_index = 0;  // Índice para el buffer temporal
-    int var_index = 0;
+static char	*expand_var(const char *input, t_general *info)
+{
+    char	*result = NULL;
+    int		len = strlen(input);
+    char	temp[1024] = {0};  // Buffer temporal para construir el resultado expandido
+    char	var_name[256] = {0};
+    int		temp_index = 0;  // Índice para el buffer temporal
+    int		var_index = 0;
 
     for (int i = 0; i < len; i++) {
         // Expandir el estado de salida "$?"

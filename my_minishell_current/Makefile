@@ -1,6 +1,6 @@
 NAME        = minishell
 HEADER      = minishell.h
-FLAGS       = -Wall -Werror -Wextra #-fsanitize=address -fsanitize=leak
+FLAGS       = -Wall -Werror -Wextra -fsanitize=address -fsanitize=leak
 LIB_DIR     = ./libft/
 LIB_NAME    = libft.a
 LIB         = $(addprefix $(LIB_DIR), $(LIB_NAME))
@@ -13,7 +13,7 @@ SRCS        = main.c executor.c prints.c \
 				utils_6.c utils_7.c utils_8.c \
 				utils_9.c utils_10.c utils_11.c \
 				utils_12.c utils_13.c utils_14.c \
-				utils_15.c \
+				utils_15.c utils_16.c \
 				#token_2.c token_3.c \
 				token_4.c token_5.c token_6.c token_7.c \
 				token_8.c token_9.c token_10.c token_11.c \

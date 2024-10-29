@@ -1,15 +1,16 @@
 
-export v="aa"
-export v="bb"
--actualiza v en el env, pero quedan dos declare -x v="aa" y v="bb" en el export. solo debe quedar el ultimo
 
 LOS ERRORES DE SINTAXIS no deben salir de minishell, deben generar nuevo prompt y setear el status a 2
 
 ----- minishell> (ctrl+d) = input null 
 ----- ctrl+c -> nuevo prompt. (error). en cat hace exit de cat sin salir (ok). DEBE DEVOLVER 130 (128 + senal)
 ----- ctrl+\ no hace nada en readline ni en heredoc. en cat hace core dumped pero no sale. DEBE DEVOLVER 131 (128 + senal)
------ echo -n -n -n -n
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+exit 35 da leaks. debe devolver status 35
+stress test con la hoja de correcciones
 
-cd vehicles.txt da no such file or directory vs. Not a directory
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+norminette utils_1.c utils_2.c utils_3.c utils_4.c utils_5.c utils_6.c utils_7.c utils_8.c utils_9.c utils_10.c utils_11.c utils_12.c utils_13.c utils_14.c utils_15.c utils_16.c utils_executor.c sections.c prints.c builtins_1.c builtins_2.c executor.c frees.c
