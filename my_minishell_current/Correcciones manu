@@ -1,4 +1,5 @@
 
+
 LOS ERRORES DE SINTAXIS no deben salir de minishell, deben generar nuevo prompt y setear el status a 2
 
 ----- minishell> (ctrl+d) = input null 

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:39:19 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 20:43:56 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/30 10:05:53 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,20 @@ void	if_remove_var_from_env(char ***env, char *var)
 	var_name = NULL;
 	if (!check_all_env(env, var, &var_name, &env_len))
 		return ;
-	new_env = (char **)malloc(sizeof(char *) * (env_len - 1));
+	new_env = (char **)malloc(sizeof(char *) * (env_len));
 	i = 0;
 	j = 0;
 	while (i < env_len)
 	{
 		if (!compare_var_name((*env)[i], var_name))
 			new_env[j++] = (*env)[i];
+		else
+			free((*env)[i]);
 		i++;
 	}
+	new_env[j] = NULL;
 	set_new_env(new_env, j, var_name, env);
+	//free(var_name);
 }
 
 // exports to env in t_general

@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 18:25:03 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 20:40:43 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:38:30 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	**reset_env(char ***env, int i)
 	{
 		if (j != i)
 		{
-			new_env[k] = (*env)[j];
+			new_env[k] = ft_strdup((*env)[j]);
 			k++;
 		}
 		j++;
@@ -86,33 +86,53 @@ char	**reset_env(char ***env, int i)
 	return (new_env);
 }
 
-void	clean_repeateds(char ***env)
+void clean_repeateds(char ***env)
 {
 	int		i;
+	int		j;
+	int		k;
+	int		l;
 	char	*s1;
 	char	*s2;
 	char	**new_env;
 
 	i = 0;
-	new_env = NULL;
-	s1 = NULL;
-	s2 = NULL;
-	while ((*env)[i] && (*env)[i + 1])
+	while ((*env)[i])
 	{
 		s1 = give_varname((*env)[i]);
-		s2 = give_varname((*env)[i + 1]);
-		if (ft_strcmp(s1, s2) == 0)
+		j = i + 1;
+		while ((*env)[j])
 		{
-			if (new_env)
-				free(new_env);
-			new_env = reset_env(env, i);
-			free(*env);
-			*env = new_env;
+			s2 = give_varname((*env)[j]);
+			if (s1 && s2 && ft_strcmp(s1, s2) == 0)
+			{
+				free((*env)[i]);
+				(*env)[i] = NULL;
+				free(s2);
+				break ;
+			}
+			if (s2)
+				free(s2);
+			j++;
 		}
-		if (s1)
-			free(s1);
-		if (s2)
-			free(s2);
+		free(s1);
 		i++;
 	}
+	new_env = malloc(sizeof(char *) * (i + 1));
+	if (!new_env)
+		return ;
+	k = 0;
+	l = 0;
+	while (l < i)
+	{
+		if ((*env)[l] != NULL)
+		{
+			new_env[k] = (*env)[l];
+			k++;
+		}
+		l++;
+	}
+	new_env[k] = NULL;
+	free(*env);
+	*env = new_env;
 }

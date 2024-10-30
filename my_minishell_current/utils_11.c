@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 20:35:51 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/29 20:43:08 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:46:13 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 void	add_export_var(t_section *current, char ***new_paths, int n)
 {
-	add_str_to_matrix(&current->info->exports,
-		ft_strjoin("declare -x ", current->cmdv[n]));
+	char	*str;
+
+	str = ft_strjoin("declare -x ", current->cmdv[n]);
+	add_str_to_matrix(&current->info->exports, str);
+	free(str);
 	if (ft_strchr(current->cmdv[n], '='))
 	{
 		if_remove_var_from_env(&current->info->env, current->cmdv[n]);
-		add_str_to_matrix(&current->info->env, ft_strdup(current->cmdv[n]));
+		add_str_to_matrix(&current->info->env, current->cmdv[n]);
 		if (ft_strncmp_pipex(current->cmdv[n], "PATH=", 5) == 0)
 		{
 			if (*new_paths != NULL)

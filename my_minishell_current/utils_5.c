@@ -6,7 +6,7 @@
 /*   By: mgimon-c <mgimon-c@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 21:35:56 by mgimon-c          #+#    #+#             */
-/*   Updated: 2024/10/28 19:42:43 by mgimon-c         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:42:10 by mgimon-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,28 @@
 void	add_str_to_matrix(char ***matrix, char *str)
 {
 	int		i;
+	char	*duplicate;
 	char	**new_matrix;
 
 	if (!matrix || !str)
 		return ;
 	i = 0;
-	while ((*matrix)[i])
+	while ((*matrix) && (*matrix)[i])
 		i++;
 	new_matrix = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!new_matrix)
 		return ;
 	i = 0;
-	while ((*matrix)[i])
+	while ((*matrix) && (*matrix)[i])
 	{
-		new_matrix[i] = (*matrix)[i];
+		new_matrix[i] = ft_strdup((*matrix)[i]);
 		i++;
 	}
-	new_matrix[i] = str;
+	duplicate = ft_strdup(str);
+	new_matrix[i] = duplicate;
 	new_matrix[i + 1] = NULL;
-	free(*matrix);
+	if (*matrix)
+		matrix_free(*matrix);
 	*matrix = new_matrix;
 }
 
