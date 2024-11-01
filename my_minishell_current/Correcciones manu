@@ -11,13 +11,8 @@ SEÑALES
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Leaks cd
 - Leak cuando loop vacio (enter)
-
-- cd ../.. (antes de clean complex route) retrocede dos, pero solo quita uno del pwd.
-- cd ../../../directorio da un leak
-
-utils_17, al menos, contiene muchas funciones del sistema
+- utils_17, al menos, contiene muchas funciones del sistema, fors, etc
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
