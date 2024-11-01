@@ -11,7 +11,8 @@ SEÑALES
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-- Leaks
+- Leaks cd
+- Leak cuando loop vacio (enter)
 
 - cd ../.. (antes de clean complex route) retrocede dos, pero solo quita uno del pwd.
 - cd ../../../directorio da un leak
